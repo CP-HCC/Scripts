@@ -216,3 +216,15 @@ Stop-Service W3SVC
 #Set-Service <servicename> -StartupType Automatic -Status Running
 #For stopping services
 #Set-Service <servicename> -StartupType Disabled -Status Stopped
+
+#-----------------------------------------------------------------------------------------------------------------
+#
+#Turns Windows Firewall on, sets firewall inbound/outbound policy to defaults
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+netsh advfirewall set allprofiles state on
+netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound
+
+#Sets a rule for a port
+netsh advfirewall firewall add rule dir = <in|out> action = <allow | block | bypass > name = "<Name>" protocol = <tcp|udp> localport = <port>
+#-----------------------------------------------------------------------------------------------------------------
