@@ -169,35 +169,50 @@ while ($loopnumber -ne 1){
 }
 #-----------------------------------------------------------------------------------------------------------------
 #
-#Starts the Windows Firewall
+#Sets services on or off
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
 #Firewall
-Set-Service MpsSvc -StartupType Automatic -Status Running
+Set-Service MpsSvc -StartupType Automatic #-Status Running
+Start-Service MpsSvc
+
 #Telnet
-Set-Service TlntSvr -StartupType Disabled -Status Stopped
+Set-Service TlntSvr -StartupType Disabled #-Status Stopped
+Stop-Service TlntSvr
+
 #RD Config
-Set-Service SessionEnv -StartupType Disabled -Status Stopped
+Set-Service SessionEnv -StartupType Disabled #-Status Stopped
+Stop-Service SessionEnv
+
 #RD Services
-Set-Service TermService -StartupType Disabled -Status Stopped
+Set-Service TermService -StartupType Disabled #-Status Stopped
+Stop-Service TermService
+
 #RD Services UserMode Port Redirector
-Set-Service UmRdpService -StartupType Disabled -Status Stopped
+Set-Service UmRdpService -StartupType Disabled #-Status Stopped
+Stop-Service UmRdpService
+
 #ICS
-Set-Service SharedAccess -StartupType Disabled -Status Stopped
+Set-Service SharedAccess -StartupType Disabled #-Status Stopped
+Stop-Service SharedAccess
+
 #Remote Registry
-Set-Service RemoteRegistry -StartupType Disabled -Status Stopped
+Set-Service RemoteRegistry -StartupType Disabled #-Status Stopped
+Stop-Service RemoteRegistry
+
 #SSDP Discovery
-Set-Service SSDPPSRV -StartupType Disabled -Status Stopped
+Set-Service SSDPPSRV -StartupType Disabled #-Status Stopped
+Stop-Service SSDPPSRV
 
 #UPnP Device Host
-Set-Service upnphost -StartupType Disabled -Status Stopped
+Set-Service upnphost -StartupType Disabled #-Status Stopped
+Stop-Service upnphost
 
 #WWW Publishing Service
-Set-Service W3SVC -StartupType Disabled -Status Stopped
-
+Set-Service W3SVC -StartupType Disabled #-Status Stopped
+Stop-Service W3SVC
 
 #For starting services
 #Set-Service <servicename> -StartupType Automatic -Status Running
-
 #For stopping services
 #Set-Service <servicename> -StartupType Disabled -Status Stopped
