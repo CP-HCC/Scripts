@@ -113,7 +113,7 @@ $userslist | Foreach-Object {
    }
    if($_.name -NotContains $MainDude){
       Write-Host($_.caption)
-      ([adsi](ìWinNT://î+$_.caption).replace(ì\î,î/î)).SetPassword((generatePasswords($_.name)))
+      ([adsi](‚ÄúWinNT://‚Äù+$_.caption).replace(‚Äú\‚Äù,‚Äù/‚Äù)).SetPassword((generatePasswords($_.name)))
    }
 }
 #-----------------------------------------------------------------------------------------------------------------
@@ -172,7 +172,29 @@ while ($loopnumber -ne 1){
 #Starts the Windows Firewall
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
+#Firewall
 Set-Service MpsSvc -StartupType Automatic -Status Running
+#Telnet
+Set-Service TlntSvr -StartupType Disabled -Status Stopped
+#RD Config
+Set-Service SessionEnv -StartupType Disabled -Status Stopped
+#RD Services
+Set-Service TermService -StartupType Disabled -Status Stopped
+#RD Services UserMode Port Redirector
+Set-Service UmRdpService -StartupType Disabled -Status Stopped
+#ICS
+Set-Service SharedAccess -StartupType Disabled -Status Stopped
+#Remote Registry
+Set-Service RemoteRegistry -StartupType Disabled -Status Stopped
+#SSDP Discovery
+Set-Service SSDPPSRV -StartupType Disabled -Status Stopped
+
+#UPnP Device Host
+Set-Service upnphost -StartupType Disabled -Status Stopped
+
+#WWW Publishing Service
+Set-Service W3SVC -StartupType Disabled -Status Stopped
+
 
 #For starting services
 #Set-Service <servicename> -StartupType Automatic -Status Running
