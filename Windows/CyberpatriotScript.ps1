@@ -232,7 +232,55 @@ DISM /online /disable-feature /featurename:MediaFeatures
 #Downloads and launches the installer for Windows Security Essentials
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
+if((Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe") -eq 'True'){
 $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/amd64/mseinstall.exe"
 $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
 Invoke-WebRequest $source -OutFile $destination
+Write-Host("Press Enter once download is complete")
+Read-Host
 mseinstall.exe
+}else{
+}
+#-----------------------------------------------------------------------------------------------------------------
+#
+#Lists all media files in User files
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+Write-Host("Audio Files")
+Get-ChildItem C:\Users "*.mp3" -r -name
+Get-ChildItem C:\Users "*.ac3" -r -name
+Get-ChildItem C:\Users "*.aac" -r -name
+Get-ChildItem C:\Users "*.aiff" -r -name
+Get-ChildItem C:\Users "*.falc" -r -name
+Get-ChildItem C:\Users "*.m4a" -r -name
+Get-ChildItem C:\Users "*.m4p" -r -name
+Get-ChildItem C:\Users "*.midi" -r -name
+Get-ChildItem C:\Users "*.mp2" -r -name
+Get-ChildItem C:\Users "*.m3u" -r -name
+Get-ChildItem C:\Users "*.ogg" -r -name
+Get-ChildItem C:\Users "*.vqf" -r -name
+Get-ChildItem C:\Users "*.wav" -r -name
+Write-Host("Video Files")
+Get-ChildItem C:\Users "*.wma" -r -name
+Get-ChildItem C:\Users "*.mp4" -r -name
+Get-ChildItem C:\Users "*.avi" -r -name
+Get-ChildItem C:\Users "*.mpeg4" -r -name
+Write-Host("Image Files")
+Get-ChildItem C:\Users "*.gif" -r -name
+Get-ChildItem C:\Users "*.png" -r -name
+Get-ChildItem C:\Users "*.bmp" -r -name
+Get-ChildItem C:\Users "*.jpg" -r -name
+Get-ChildItem C:\Users "*.jpeg" -r -name
+#-----------------------------------------------------------------------------------------------------------------
+#
+#Lists all Programs
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+Write-Host("Programs and their Vendors")
+Write-Host("--------------------------")
+Get-WmiObject -Class win32_product | Where-Object -FilterScript {$_.Vendor -notmatch "Microsoft"} | Foreach-Object {
+Write-Host($_.Name)
+Write-Host($_.Vendor)
+Write-Host(" ")
+}
+Write-Host("--------------------------")
