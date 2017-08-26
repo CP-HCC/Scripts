@@ -239,38 +239,150 @@ if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe"){
    Invoke-WebRequest $source -OutFile $destination
    Write-Host("Press Enter once download is complete")
    Read-Host
-   mseinstall.exe
+   Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
 }
 #-----------------------------------------------------------------------------------------------------------------
 #
-#Lists all media files in User files
+#Lists all media files in User files and prompts for delete
+#Needs to be cleaned up but its 2:24 and im going to bed
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
-Write-Host("Audio Files")
-Get-ChildItem C:\Users "*.mp3" -r -name
-Get-ChildItem C:\Users "*.ac3" -r -name
-Get-ChildItem C:\Users "*.aac" -r -name
-Get-ChildItem C:\Users "*.aiff" -r -name
-Get-ChildItem C:\Users "*.falc" -r -name
-Get-ChildItem C:\Users "*.m4a" -r -name
-Get-ChildItem C:\Users "*.m4p" -r -name
-Get-ChildItem C:\Users "*.midi" -r -name
-Get-ChildItem C:\Users "*.mp2" -r -name
-Get-ChildItem C:\Users "*.m3u" -r -name
-Get-ChildItem C:\Users "*.ogg" -r -name
-Get-ChildItem C:\Users "*.vqf" -r -name
-Get-ChildItem C:\Users "*.wav" -r -name
-Write-Host("Video Files")
-Get-ChildItem C:\Users "*.wma" -r -name
-Get-ChildItem C:\Users "*.mp4" -r -name
-Get-ChildItem C:\Users "*.avi" -r -name
-Get-ChildItem C:\Users "*.mpeg4" -r -name
-Write-Host("Image Files")
-Get-ChildItem C:\Users "*.gif" -r -name
-Get-ChildItem C:\Users "*.png" -r -name
-Get-ChildItem C:\Users "*.bmp" -r -name
-Get-ChildItem C:\Users "*.jpg" -r -name
-Get-ChildItem C:\Users "*.jpeg" -r -name
+$loopnumber = 0
+while ($loopnumber -ne 1){
+   $num = (Get-ChildItem C:\Users "*.mp3" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.ac3" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.aac" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.aiff" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.falc" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.m4a" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.m4p" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.midi" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.mp2" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.m3u" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.ogg" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.vqf" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.wav" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.wma" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.mp4" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.avi" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.mpeg4" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.gif" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.png" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.bmp" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.jpg" -r).Count
+   $num = $num + (Get-ChildItem C:\Users "*.jpeg" -r).Count
+   Write-Host("There are "+$num+" media files")
+   Write-Host("Loading media files...")
+   $numarray = @(0..$num)
+   $i = 1
+   $poop = Get-ChildItem C:\Users "*.mp3" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.ac3" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.aac" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.aiff" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.falc" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.m4a" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.m4p" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.midi" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.mp2" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.m3u" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.ogg" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.vqf" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.wav" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.wma" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.mp4" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.avi" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.mpeg4" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.gif" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.png" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.bmp" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.jpg" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $poop = Get-ChildItem C:\Users "*.jpeg" -r | Foreach-Object {
+      $numarray[$i] = $_.FullName
+      $i++
+   }
+   $u = 1
+   $numarray | Foreach-Object{
+      Write-Host("Media "+$u+": ") -nonewline
+      Write-Host($numarray[$u])
+      $u++
+   }
+   Write-Host("Would you like to delete any of these media files? y/n")
+   $deletemedia = Read-Host
+   if($deletemedia -eq "y"){
+      Write-Host("Enter the media number of the file")
+      $badmedia = Read-Host
+      rm $numarray[$badmedia]
+   }
+   if($deletemedia -eq "n"){
+      $loopnumber = 1
+   }
+   if($deletemedia -ne "y" -and $deletemedia -ne "n"){
+      Write-Host("That is neither a y or n")
+   }
+}
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Lists all Programs
