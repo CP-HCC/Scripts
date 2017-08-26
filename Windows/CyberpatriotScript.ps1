@@ -249,124 +249,124 @@ if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe"){
 #-----------------------------------------------------------------------------------------------------------------
 $loopnumber = 0
 while ($loopnumber -ne 1){
-   $num = (Get-ChildItem C:\Users "*.mp3" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.ac3" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.aac" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.aiff" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.falc" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.m4a" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.m4p" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.midi" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.mp2" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.m3u" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.ogg" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.vqf" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.wav" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.wma" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.mp4" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.avi" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.mpeg4" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.gif" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.png" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.bmp" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.jpg" -r).Count
-   $num = $num + (Get-ChildItem C:\Users "*.jpeg" -r).Count
-   Write-Host("There are "+$num+" media files")
+   $mediacount = (Get-ChildItem C:\Users "*.mp3" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.ac3" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.aac" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.aiff" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.falc" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.m4a" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.m4p" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.midi" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.mp2" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.m3u" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.ogg" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.vqf" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.wav" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.wma" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.mp4" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.avi" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.mpeg4" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.gif" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.png" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.bmp" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.jpg" -r).Count
+   $mediacount = $mediacount + (Get-ChildItem C:\Users "*.jpeg" -r).Count
+   Write-Host("There are "+$mediacount+" media files")
    Write-Host("Loading media files...")
-   $numarray = @(0..$num)
+   $mediacountarray = @(0..$mediacount)
    $i = 1
-   $poop = Get-ChildItem C:\Users "*.mp3" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.mp3" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.ac3" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.ac3" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.aac" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.aac" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.aiff" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.aiff" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.falc" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.falc" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.m4a" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.m4a" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.m4p" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.m4p" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.midi" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.midi" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.mp2" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.mp2" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.m3u" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.m3u" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.ogg" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.ogg" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.vqf" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.vqf" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.wav" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.wav" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.wma" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.wma" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.mp4" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.mp4" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.avi" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.avi" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.mpeg4" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.mpeg4" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.gif" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.gif" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.png" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.png" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.bmp" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.bmp" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.jpg" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.jpg" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
-   $poop = Get-ChildItem C:\Users "*.jpeg" -r | Foreach-Object {
-      $numarray[$i] = $_.FullName
+   Get-ChildItem C:\Users "*.jpeg" -r | Foreach-Object {
+      $mediacountarray[$i] = $_.FullName
       $i++
    }
    $u = 1
-   $numarray | Foreach-Object{
+   $mediacountarray | Foreach-Object{
       Write-Host("Media "+$u+": ") -nonewline
-      Write-Host($numarray[$u])
+      Write-Host($mediacountarray[$u])
       $u++
    }
    Write-Host("Would you like to delete any of these media files? y/n")
@@ -374,7 +374,7 @@ while ($loopnumber -ne 1){
    if($deletemedia -eq "y"){
       Write-Host("Enter the media number of the file")
       $badmedia = Read-Host
-      rm $numarray[$badmedia]
+      rm $mediacountarray[$badmedia]
    }
    if($deletemedia -eq "n"){
       $loopnumber = 1
@@ -396,3 +396,4 @@ Get-WmiObject -Class win32_product | Where-Object -FilterScript {$_.Vendor -notm
    Write-Host(" ")
 }
 Write-Host("--------------------------")
+#-----------------------------------------------------------------------------------------------------------------
