@@ -175,39 +175,30 @@ while ($loopnumber -ne 1){
 #Firewall
 Set-Service MpsSvc -StartupType Automatic #-Status Running
 Start-Service MpsSvc
-
 #Telnet
 Set-Service TlntSvr -StartupType Disabled #-Status Stopped
 Stop-Service TlntSvr
-
 #RD Config
 Set-Service SessionEnv -StartupType Disabled #-Status Stopped
 Stop-Service SessionEnv
-
 #RD Services
 Set-Service TermService -StartupType Disabled #-Status Stopped
 Stop-Service TermService
-
 #RD Services UserMode Port Redirector
 Set-Service UmRdpService -StartupType Disabled #-Status Stopped
 Stop-Service UmRdpService
-
 #ICS
 Set-Service SharedAccess -StartupType Disabled #-Status Stopped
 Stop-Service SharedAccess
-
 #Remote Registry
 Set-Service RemoteRegistry -StartupType Disabled #-Status Stopped
 Stop-Service RemoteRegistry
-
 #SSDP Discovery
 Set-Service SSDPPSRV -StartupType Disabled #-Status Stopped
 Stop-Service SSDPPSRV
-
 #UPnP Device Host
 Set-Service upnphost -StartupType Disabled #-Status Stopped
 Stop-Service upnphost
-
 #WWW Publishing Service
 Set-Service W3SVC -StartupType Disabled #-Status Stopped
 Stop-Service W3SVC
@@ -216,7 +207,6 @@ Stop-Service W3SVC
 #Set-Service <servicename> -StartupType Automatic -Status Running
 #For stopping services
 #Set-Service <servicename> -StartupType Disabled -Status Stopped
-
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Turns Windows Firewall on, sets firewall inbound/outbound policy to defaults
@@ -226,5 +216,23 @@ netsh advfirewall set allprofiles state on
 netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound
 
 #Sets a rule for a port
-netsh advfirewall firewall add rule dir = <in|out> action = <allow | block | bypass > name = "<Name>" protocol = <tcp|udp> localport = <port>
+#netsh advfirewall firewall add rule dir = <in|out> action = <allow | block | bypass > name = "<Name>" protocol = <tcp|udp> localport = <port>
 #-----------------------------------------------------------------------------------------------------------------
+#
+#Disables unwanted Windows Features
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+DISM /online /disable-feature /featurename:TelnetClient
+DISM /online /disable-feature /featurename:TelnetServer
+DISM /online /disable-feature /featurename:InternetInformationServices
+DISM /online /disable-feature /featurename:TFTPClient
+DISM /online /disable-feature /featurename:MediaFeatures
+#-----------------------------------------------------------------------------------------------------------------
+#
+#Downloads and launches the installer for Windows Security Essentials
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+$source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/amd64/mseinstall.exe"
+$destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+Invoke-WebRequest $source -OutFile $destination
+mseinstall.exe
