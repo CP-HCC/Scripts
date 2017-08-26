@@ -232,7 +232,7 @@ DISM /online /disable-feature /featurename:MediaFeatures
 #Downloads and launches the installer for Windows Security Essentials
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
-if((Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe") -eq 'True'){
+if((Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe") -eq 'False'){
 $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/amd64/mseinstall.exe"
 $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
 Invoke-WebRequest $source -OutFile $destination
