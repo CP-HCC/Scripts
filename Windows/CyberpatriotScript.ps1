@@ -396,6 +396,7 @@ while ($loopnumber -ne 1){
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Lists all Programs
+#THIS CURRENTLY HAS NO USE AND NEEDS TO BE WORKED ON
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
 Write-Host("Programs and their Vendors")
@@ -418,6 +419,36 @@ $MSUpdateSettings.ScheduledInstallationTime=3
 $MSUpdateSettings.IncludeRecommendedUpdates=1
 $MSUpdateSettings.NonAdministratorsElevated=1
 $MSUpdateSettings.save()
+#-----------------------------------------------------------------------------------------------------------------
+#
+#Updates Mozilla Firefox to version 55.0.3
+#Verified Operating Systems: Windows 7
+#TODO: Update to newest version
+#-----------------------------------------------------------------------------------------------------------------
+New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
+copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
+$source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win64/en-US/firefox-55.0.3.complete.mar"
+$destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
+Invoke-WebRequest $source -OutFile $destination
+$loopnumber = 0
+while ($loopnumber -ne 1){
+   Write-Host("Press Enter once download is complete")
+   Read-Host
+   if(Test-Path $destination){
+      $loopnumber = 1
+   }else{
+      Write-Host("Download is not complete")
+   }
+}
+$fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
+$fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
+$fileplace3 = "C:\Program Files\Mozilla Firefox\uninstall\helper.exe"
+Set-Location -Path "C:\Program Files\Mozilla Firefox"
+cmd.exe /c $fileplace $fileplace2 "C:\Program Files\Mozilla Firefox" "C:\Program Files\Mozilla Firefox"
+move-item -force -path ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.log") -destination "C:\Program Files\Mozilla Firefox\uninstall\uninstall.update"
+cmd.exe /c $fileplace3 /PostUpdate
+rm -force ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -r
+Set-Location -Path "C:\Windows\system32"
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Scans for, downloads, and installs updates
