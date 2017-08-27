@@ -237,9 +237,16 @@ if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe"){
    $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/amd64/mseinstall.exe"
    $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
    Invoke-WebRequest $source -OutFile $destination
+$loopnumber = 0
+while ($loopnumber -ne 1){
    Write-Host("Press Enter once download is complete")
    Read-Host
+   if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
    Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+   $loopnumber = 1
+   }else{
+   Write-Host("Download is not complete")
+   }
 }
 #-----------------------------------------------------------------------------------------------------------------
 #
@@ -396,4 +403,16 @@ Get-WmiObject -Class win32_product | Where-Object -FilterScript {$_.Vendor -notm
    Write-Host(" ")
 }
 Write-Host("--------------------------")
+#-----------------------------------------------------------------------------------------------------------------
+#
+#Sets Windows Update Settings
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+$MSUpdateSettings = (New-Object -com "Microsoft.Update.AutoUpdate").Settings
+$MSUpdateSettings.NotificationLevel=4
+$MSUpdateSettings.ScheduledInstallationDay=0
+$MSUpdateSettings.ScheduledInstallationTime=3
+$MSUpdateSettings.IncludeRecommendedUpdates=1
+$MSUpdateSettings.NonAdministratorsElevated=1
+$MSUpdateSettings.save()
 #-----------------------------------------------------------------------------------------------------------------
