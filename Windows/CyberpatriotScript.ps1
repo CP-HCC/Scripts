@@ -175,6 +175,9 @@ while ($loopnumber -ne 1){
 #Firewall
 Set-Service MpsSvc -StartupType Automatic #-Status Running
 Start-Service MpsSvc
+#Windows Updates
+Set-Service wuauserv -StartupType Automatic #-Status Running
+Start-Service wuauserv
 #Telnet
 Set-Service TlntSvr -StartupType Disabled #-Status Stopped
 Stop-Service TlntSvr
@@ -252,7 +255,6 @@ if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe"){
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Lists all media files in User files and prompts for delete
-#Needs to be cleaned up but its 2:24 and im going to bed
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
 $loopnumber = 0
@@ -417,3 +419,52 @@ $MSUpdateSettings.IncludeRecommendedUpdates=1
 $MSUpdateSettings.NonAdministratorsElevated=1
 $MSUpdateSettings.save()
 #-----------------------------------------------------------------------------------------------------------------
+#
+#Scans for, downloads, and installs updates
+#Verified Operating Systems: Windows 7
+#It may need some polishing
+#-----------------------------------------------------------------------------------------------------------------
+$criteria="IsInstalled=0 and Type='Software'"
+$updateSession = new-object -com "Microsoft.Update.Session"
+$updates=$updateSession.CreateupdateSearcher().Search($criteria).Updates
+if($Updates.Count -eq 0){
+   Write-Host("No updates found")
+}else{
+   Write-Host($Updates.Count)
+   $downloader = $updateSession.CreateUpdateDownloader()
+   Write-Host($downloader)
+   $downloader.Updates = $Updates
+   $Result= $downloader.Download()
+   Write-Host($Result)
+   if(($Result.Hresult -eq 0) –and (($result.resultCode –eq 2) -or ($result.resultCode –eq 3)) ){
+      $updatesToInstall = New-object -com "Microsoft.Update.UpdateColl"
+      Write-Host($updatesToInstall)
+      $Updates | where {$_.isdownloaded} | foreach-Object{
+         $updatesToInstall.Add($_) | out-null
+      }
+      $installer = $updateSession.CreateUpdateInstaller()
+      Write-Host($installer)
+      $installer.Updates = $updatesToInstall
+      $installationResult = $installer.Install()
+      Write-Host($installationResult)
+      $Global:counter=-1
+      $installer.updates | Format-Table -autosize -property Title,EulaAccepted,@{label='Result';
+         expression={$ResultCode[$installationResult.GetUpdateResult($Global:Counter++).resultCode ] }}
+      if($installationResult.rebootRequired){
+         $loopnumber = 0
+         while($loopnumber -ne 1){
+            Write-Host("Restart required. Restart now? y/n")
+            $restart = Read-Host
+            if($restart -eq "y"){
+               shutdown.exe /t 0 /r
+            }
+            if($restart -eq "n"){
+               $loopnumber = 1
+            }
+            if($restart -ne "y" -and $deletemedia -ne "n"){
+               Write-Host("That is neither a y or n")
+            }
+         }
+      }
+   }
+}
