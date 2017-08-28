@@ -288,9 +288,9 @@ DISM /online /disable-feature /FeatureName:IIS-LegacySnapIn
 DISM /online /disable-feature /FeatureName:IIS-FTPServer
 DISM /online /disable-feature /FeatureName:IIS-FTPSvc
 DISM /online /disable-feature /FeatureName:IIS-FTPExtensibility
-#DISM /online /disable-feature /FeatureName:MediaPlayback
-#DISM /online /disable-feature /FeatureName:WindowsMediaPlayer
-#DISM /online /disable-feature /FeatureName:MediaCenter
+DISM /online /disable-feature /FeatureName:MediaPlayback
+DISM /online /disable-feature /FeatureName:WindowsMediaPlayer
+DISM /online /disable-feature /FeatureName:MediaCenter
 DISM /online /disable-feature /FeatureName:WAS-WindowsActivationService
 DISM /online /disable-feature /FeatureName:WAS-ProcessModel
 DISM /online /disable-feature /FeatureName:WAS-NetFxEnvironment
