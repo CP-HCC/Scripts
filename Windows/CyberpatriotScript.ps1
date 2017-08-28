@@ -231,19 +231,19 @@ netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound
 #Disables unwanted Windows Features
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
-DISM /online /disable-feature /featurename:TelnetClient
-DISM /online /disable-feature /featurename:TelnetServer
-DISM /online /disable-feature /featurename:TFTPClient
-DISM /online /disable-feature /featureName:IIS-WebServerRole
-DISM /online /disable-feature /featureName:IIS-WebServer
-DISM /online /disable-feature /featureName:IIS-CommonHttpFeatures
-DISM /online /disable-feature /featureName:IIS-HttpErrors
-DISM /online /disable-feature /featureName:IIS-HttpRedirect
-DISM /online /disable-feature /featureName:IIS-ApplicationDevelopment
-DISM /online /disable-feature /featureName:IIS-NetFxExtensibility
-DISM /online /disable-feature /featureName:IIS-NetFxExtensibility45
-DISM /online /disable-feature /featureName:IIS-HealthAndDiagnostics
-DISM /online /disable-feature /featureName:IIS-HttpLogging
+DISM /online /disable-feature /Featurename:TelnetClient
+DISM /online /disable-feature /Featurename:TelnetServer
+DISM /online /disable-feature /Featurename:TFTPClient
+DISM /online /disable-feature /FeatureName:IIS-WebServerRole
+DISM /online /disable-feature /FeatureName:IIS-WebServer
+DISM /online /disable-feature /FeatureName:IIS-CommonHttpFeatures
+DISM /online /disable-feature /FeatureName:IIS-HttpErrors
+DISM /online /disable-feature /FeatureName:IIS-HttpRedirect
+DISM /online /disable-feature /FeatureName:IIS-ApplicationDevelopment
+DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility
+DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility45
+DISM /online /disable-feature /FeatureName:IIS-HealthAndDiagnostics
+DISM /online /disable-feature /FeatureName:IIS-HttpLogging
 DISM /online /disable-feature /FeatureName:IIS-LoggingLibraries
 DISM /online /disable-feature /FeatureName:IIS-RequestMonitor
 DISM /online /disable-feature /FeatureName:IIS-HttpTracing
@@ -504,6 +504,7 @@ $MSUpdateSettings.save()
 #Verified Operating Systems: Windows 7
 #TODO: Update to newest version
 #-----------------------------------------------------------------------------------------------------------------
+if(Test-Path "C:\Program Files\Mozilla Firefox"){
 New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
 copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
 $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win64/en-US/firefox-55.0.3.complete.mar"
@@ -528,6 +529,9 @@ move-item -force -path ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.lo
 cmd.exe /c $fileplace3 /PostUpdate
 rm -force ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -r
 Set-Location -Path "C:\Windows\system32"
+}else{
+Write-Host("There is no Mozilla Firefox on this machine, stupid.")
+}
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Scans for, downloads, and installs updates
