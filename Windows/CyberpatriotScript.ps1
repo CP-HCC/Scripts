@@ -233,9 +233,63 @@ netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound
 #-----------------------------------------------------------------------------------------------------------------
 DISM /online /disable-feature /featurename:TelnetClient
 DISM /online /disable-feature /featurename:TelnetServer
-DISM /online /disable-feature /featurename:InternetInformationServices
 DISM /online /disable-feature /featurename:TFTPClient
-DISM /online /disable-feature /featurename:MediaFeatures
+DISM /online /disable-feature /FeatureName : IIS-WebServerRole
+DISM /online /disable-feature /FeatureName : IIS-WebServer
+DISM /online /disable-feature /FeatureName : IIS-CommonHttpFeatures
+DISM /online /disable-feature /FeatureName : IIS-HttpErrors
+DISM /online /disable-feature /FeatureName : IIS-HttpRedirect
+DISM /online /disable-feature /FeatureName : IIS-ApplicationDevelopment
+DISM /online /disable-feature /FeatureName : IIS-NetFxExtensibility
+DISM /online /disable-feature /FeatureName : IIS-NetFxExtensibility45
+DISM /online /disable-feature /FeatureName : IIS-HealthAndDiagnostics
+DISM /online /disable-feature /FeatureName : IIS-HttpLogging
+DISM /online /disable-feature /FeatureName : IIS-LoggingLibraries
+DISM /online /disable-feature /FeatureName : IIS-RequestMonitor
+DISM /online /disable-feature /FeatureName : IIS-HttpTracing
+DISM /online /disable-feature /FeatureName : IIS-Security
+DISM /online /disable-feature /FeatureName : IIS-URLAuthorization
+DISM /online /disable-feature /FeatureName : IIS-RequestFiltering
+DISM /online /disable-feature /FeatureName : IIS-IPSecurity
+DISM /online /disable-feature /FeatureName : IIS-Performance
+DISM /online /disable-feature /FeatureName : IIS-HttpCompressionDynamic
+DISM /online /disable-feature /FeatureName : IIS-WebServerManagementTools
+DISM /online /disable-feature /FeatureName : IIS-ManagementScriptingTools
+DISM /online /disable-feature /FeatureName : IIS-IIS6ManagementCompatibility
+DISM /online /disable-feature /FeatureName : IIS-Metabase
+DISM /online /disable-feature /FeatureName : IIS-HostableWebCore
+DISM /online /disable-feature /FeatureName : IIS-CertProvider
+DISM /online /disable-feature /FeatureName : IIS-WindowsAuthentication
+DISM /online /disable-feature /FeatureName : IIS-DigestAuthentication
+DISM /online /disable-feature /FeatureName : IIS-ClientCertificateMappingAuthentication
+DISM /online /disable-feature /FeatureName : IIS-IISCertificateMappingAuthentication
+DISM /online /disable-feature /FeatureName : IIS-ODBCLogging
+DISM /online /disable-feature /FeatureName : IIS-StaticContent
+DISM /online /disable-feature /FeatureName : IIS-DefaultDocument
+DISM /online /disable-feature /FeatureName : IIS-DirectoryBrowsing
+DISM /online /disable-feature /FeatureName : IIS-WebDAV
+DISM /online /disable-feature /FeatureName : IIS-WebSockets
+DISM /online /disable-feature /FeatureName : IIS-ApplicationInit
+DISM /online /disable-feature /FeatureName : IIS-ASPNET
+DISM /online /disable-feature /FeatureName : IIS-ASPNET45
+DISM /online /disable-feature /FeatureName : IIS-ASP
+DISM /online /disable-feature /FeatureName : IIS-CGI
+DISM /online /disable-feature /FeatureName : IIS-ISAPIExtensions
+DISM /online /disable-feature /FeatureName : IIS-ISAPIFilter
+DISM /online /disable-feature /FeatureName : IIS-ServerSideIncludes
+DISM /online /disable-feature /FeatureName : IIS-CustomLogging
+DISM /online /disable-feature /FeatureName : IIS-BasicAuthentication
+DISM /online /disable-feature /FeatureName : IIS-HttpCompressionStatic
+DISM /online /disable-feature /FeatureName : IIS-ManagementConsole
+DISM /online /disable-feature /FeatureName : IIS-ManagementService
+DISM /online /disable-feature /FeatureName : IIS-WMICompatibility
+DISM /online /disable-feature /FeatureName : IIS-LegacyScripts
+DISM /online /disable-feature /FeatureName : IIS-LegacySnapIn
+DISM /online /disable-feature /FeatureName : IIS-FTPServer
+DISM /online /disable-feature /FeatureName : IIS-FTPSvc
+DISM /online /disable-feature /FeatureName : IIS-FTPExtensibility
+DISM /online /disable-feature /FeatureName : MediaPlayback
+DISM /online /disable-feature /FeatureName : WindowsMediaPlayer
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Downloads and launches the installer for Windows Security Essentials
