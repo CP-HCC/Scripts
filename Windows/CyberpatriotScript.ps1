@@ -129,6 +129,12 @@ $localadministrator.userflags.value = $localadministrator.UserFlags.value -BOR 2
 $localadministrator.SetInfo()
 #-----------------------------------------------------------------------------------------------------------------
 #
+#Sets User Account Control to highest settings
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+Set-ItemProperty -Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA -Value 4
+#-----------------------------------------------------------------------------------------------------------------
+#
 #Removes unwanted users
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
