@@ -219,6 +219,7 @@ Stop-Service W3SVC
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Turns Windows Firewall on, sets firewall inbound/outbound policy to defaults
+#Turns off SOME sharing settings
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
 netsh advfirewall set allprofiles state on
@@ -226,6 +227,19 @@ netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound
 
 #Sets a rule for a port
 #netsh advfirewall firewall add rule dir = <in|out> action = <allow | block | bypass > name = "<Name>" protocol = <tcp|udp> localport = <port>
+#-----------------------------------------------------------------------------------------------------------------
+#
+#My attempt at getting rid of shares
+#I can't turn off all the share settings
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+netsh advfirewall firewall set rule group="Network Discovery" new enable=no
+netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=no
+if ($share = Get-WmiObject -Class Win32_Share){ #-ComputerName WH0RCUTEACHER -Filter "Name='RobsShare'"){
+$share.delete()
+}
+#Enables system restore
+enable-computerrestore -drive "C:\"
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Disables unwanted Windows Features
