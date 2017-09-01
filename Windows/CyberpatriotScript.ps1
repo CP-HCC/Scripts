@@ -1,14 +1,14 @@
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Installs .NET 4.5 and Powershell 4
-#TO-DO: Needs to be tested
+#TO-DO: Needs to run in background
 #-----------------------------------------------------------------------------------------------------------------
 $netversion = (Get-ItemProperty ‘HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full’  -Name Release).Release
 if($netversion -lt 378389){
    $ie = New-Object -ComObject InternetExplorer.Application
-   $ie.Visible = $false
+   $ie.Visible = $true
    $ie.Navigate("https://www.microsoft.com/en-us/download/details.aspx?id=30653")
-   Start-Sleep -s 10
+   while($ie.Busy){Sleep 1}
    $Link=$ie.Document.getElementsByTagName("a") | where-object {$_.innerText -eq 'Download'}
    $Link.click();
    $loopnumber = 0
@@ -34,13 +34,13 @@ if($psversion -lt 4){
    $ie = New-Object -ComObject InternetExplorer.Application
    $ie.Visible = $true
    $ie.Navigate("https://www.microsoft.com/en-us/download/details.aspx?id=40855")
-   Start-Sleep -s 10
+   while($ie.Busy){Sleep 1}
    $Link=$ie.Document.getElementsByTagName("a") | where-object {$_.innerText -eq 'Download'}
    $Link.click();
-   Start-Sleep -s 10
+   while($ie.Busy){Sleep 1}
    $Link=$ie.Document.getElementsByTagName("input") | where-object {$_.value -eq '3'}
    $Link.click();
-   Start-Sleep -s 10
+   while($ie.Busy){Sleep 1}
    $Link=$ie.Document.getElementsByTagName("span") | where-object {$_.innerText -eq 'Next'}
    $Link.click();
    $loopnumber = 0
