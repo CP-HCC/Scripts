@@ -1,5 +1,70 @@
 #-----------------------------------------------------------------------------------------------------------------
 #
+#Installs .NET 4.5 and Powershell 4
+#TO-DO: Needs to be tested
+#-----------------------------------------------------------------------------------------------------------------
+$netversion = (Get-ItemProperty ‘HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full’  -Name Release).Release
+if($netversion -lt 378389){
+   $ie = New-Object -ComObject InternetExplorer.Application
+   $ie.Visible = $false
+   $ie.Navigate("https://www.microsoft.com/en-us/download/details.aspx?id=30653")
+   Start-Sleep -s 10
+   $Link=$ie.Document.getElementsByTagName("a") | where-object {$_.innerText -eq 'Download'}
+   $Link.click();
+   $loopnumber = 0
+   $destination = "C:\Users\"+$env:UserName+"\Downloads\dotNetFx45_Full_setup.exe"
+   while ($loopnumber -ne 1){
+      Write-Host("Press Enter once download is complete")
+      Read-Host
+      if(Test-Path $destination){
+         Set-Location ("C:\Users\"+$env:UserName+"\Downloads")
+         .\dotNetFx45_Full_setup.exe /install=agent /silent
+         $loopnumber = 1
+         Set-Location ("C:\Windows\system32")
+         $ie.Quit()
+      }else{
+         Write-Host("Download is not complete")
+      }
+   }
+}else{
+   Write-Host("poop")
+}
+$psversion = $PSVersionTable.PSVersion.Major
+if($psversion -lt 4){
+   $ie = New-Object -ComObject InternetExplorer.Application
+   $ie.Visible = $true
+   $ie.Navigate("https://www.microsoft.com/en-us/download/details.aspx?id=40855")
+   Start-Sleep -s 10
+   $Link=$ie.Document.getElementsByTagName("a") | where-object {$_.innerText -eq 'Download'}
+   $Link.click();
+   Start-Sleep -s 10
+   $Link=$ie.Document.getElementsByTagName("input") | where-object {$_.value -eq '3'}
+   $Link.click();
+   Start-Sleep -s 10
+   $Link=$ie.Document.getElementsByTagName("span") | where-object {$_.innerText -eq 'Next'}
+   $Link.click();
+   $loopnumber = 0
+   $destination = "C:\Users\"+$env:UserName+"\Downloads\Windows6.1-KB2819745-x64-MultiPkg.msu"
+   while ($loopnumber -ne 1){
+      Write-Host("Press Enter once download is complete")
+      Read-Host
+      if(Test-Path $destination){
+         Set-Location ("C:\Users\"+$env:UserName+"\Downloads")
+         .\Windows6.1-KB2819745-x64-MultiPkg.msu /install=agent /silent
+         $loopnumber = 1
+         Set-Location ("C:\Windows\system32")
+         $ie.Quit()
+      }else{
+         Write-Host("Download is not complete")
+      }
+   }
+}else{
+   Write-Host("poop")
+}
+Write-Host("If it gave you two poops, you can hit ENTER and go on, otherwise get Andrew")
+Read-Host
+#-----------------------------------------------------------------------------------------------------------------
+#
 #Sets security policies (Password stuff, and auditing)
 #Verified Operating Systems: Windows 7
 #Expected Operating Systems: XP and beyond, Server 2003 and beyond
