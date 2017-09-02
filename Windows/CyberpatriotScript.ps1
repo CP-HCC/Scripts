@@ -3,8 +3,13 @@
 #Installs .NET 4.5 and Powershell 4
 #TO-DO: Needs to run in background
 #-----------------------------------------------------------------------------------------------------------------
+Write-Host("--------------------------------------------------------------------------")
+Write-Host("Checking for Powershell 4.0....")
+$poop = 0
 $netversion = (Get-ItemProperty ‘HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full’  -Name Release).Release
 if($netversion -lt 378389){
+   Write-Host("Missing .NET 4.5
+Script will now update it, DON'T RESTART IF PROMPTED.")
    $ie = New-Object -ComObject InternetExplorer.Application
    $ie.Visible = $true
    $ie.Navigate("https://www.microsoft.com/en-us/download/details.aspx?id=30653")
@@ -27,10 +32,12 @@ if($netversion -lt 378389){
       }
    }
 }else{
-   Write-Host("poop")
+   $poop++
 }
 $psversion = $PSVersionTable.PSVersion.Major
 if($psversion -lt 4){
+   Write-Host("Missing PS 4.0
+Script will now update it, RESTART IF PROMPTED.")
    $ie = New-Object -ComObject InternetExplorer.Application
    $ie.Visible = $true
    $ie.Navigate("https://www.microsoft.com/en-us/download/details.aspx?id=40855")
@@ -59,9 +66,17 @@ if($psversion -lt 4){
       }
    }
 }else{
-   Write-Host("poop")
+   $poop++
 }
-Write-Host("If it gave you two poops, you can hit ENTER and go on, otherwise get Andrew")
+if($poop -ne 2){
+   Write-Host("The powershell update will require you to restart.
+Start the script again after you have restarted, and Powershell is on version 4.
+Press any key to end.")
+}else{
+   Write-Host("Powershell 4.0 is installed.")
+}
+Write-Host("--------------------------------------------------------------------------
+Welcome to the script. Press any key to start.")
 Read-Host
 #-----------------------------------------------------------------------------------------------------------------
 #
