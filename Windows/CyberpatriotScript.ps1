@@ -255,6 +255,42 @@ while ($loopnumber -ne 1){
 }
 #-----------------------------------------------------------------------------------------------------------------
 #
+#Removes unwanted groups
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+$loopnumber = 0
+while ($loopnumber -ne 1){
+   Write-Host("")
+   Write-Host("Groups")
+   Write-Host("-------------")
+   $groupslist = Get-WmiObject win32_group
+   $groupslist | Foreach-Object {
+      Write-Host($_.name)
+   }
+   Write-Host("")
+   Write-Host("Should any of these groups be removed? y/n")
+   $badgroups = Read-Host
+   if($badgroups -eq "y"){
+      Write-Host("Give me the group name")
+      $badgr = Read-Host
+      $groupslist | Foreach-Object {
+         if($_.name -Contains $badgr){
+            $ADSIComp = [ADSI]("WinNT://"+$env:COMPUTERNAME)
+            $ADSIComp.Delete('Group',$_.name)
+            Write-Host($_.name+" has been removed")
+         }else{
+         }
+      }
+   }
+   if($badgroups -eq "n"){
+      $loopnumber = 1
+   }
+   if($badgroups -ne "y" -and $badgroups -ne "n"){
+      Write-Host("That is neither a y or n")
+   }
+}
+#-----------------------------------------------------------------------------------------------------------------
+#
 #Sets services on or off
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
@@ -568,18 +604,49 @@ while ($loopnumber -ne 1){
 }
 #-----------------------------------------------------------------------------------------------------------------
 #
-#Lists all Programs
-#THIS CURRENTLY HAS NO USE AND NEEDS TO BE WORKED ON
+#Lists all installed programs and prompts for uninstall
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
-Write-Host("Programs and their Vendors")
-Write-Host("--------------------------")
-Get-WmiObject -Class win32_product | Where-Object -FilterScript {$_.Vendor -notmatch "Microsoft"} | Foreach-Object {
-   Write-Host($_.Name)
-   Write-Host($_.Vendor)
+$loopnumber = 0
+while ($loopnumber -ne 1){
+   $programcount = (Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*).Count
+   Write-Host("There are "+$programcount+" installed programs")
+   Write-Host("Loading installed programs...")
    Write-Host(" ")
+   $programcountarray = @(0..$programcount)
+   $programcountarray2 = @(0..$programcount)
+   $programcountarray3 = @(0..$programcount)
+   $i = 1
+   Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Foreach-Object {
+      $programcountarray[$i] = $_.DisplayName
+      $programcountarray2[$i] = $_.Publisher
+      $programcountarray3[$i] = $_.UninstallString
+      $i++
+   }
+   $u = 1
+   $programcountarray | Foreach-Object{
+      Write-Host("Program "+$u+": ") -nonewline
+      Write-Host($programcountarray[$u]) -nonewline
+      Write-Host("  |  Publisher: "+$programcountarray2[$u])
+      Write-Host(" ")
+      $u++
+   }
+   Write-Host("Would you like to uninstall any of these programs? y/n")
+   $deleteprogram = Read-Host
+   if($deleteprogram -eq "y"){
+      Write-Host("Enter the number of the program")
+      $badprogram = Read-Host
+      Start-Process($programcountarray3[$badprogram])
+      Write-Host("Press ENTER when uninstalled")
+      Read-Host
+   }
+   if($deleteprogram -eq "n"){
+      $loopnumber = 1
+   }
+   if($deleteprogram -ne "y" -and $deleteprogram -ne "n"){
+      Write-Host("That is neither a y or n")
+   }
 }
-Write-Host("--------------------------")
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Sets Windows Update Settings
