@@ -636,6 +636,7 @@ while ($loopnumber -ne 1){
    if($deleteprogram -eq "y"){
       Write-Host("Enter the number of the program")
       $badprogram = Read-Host
+      $programcountarray3[$badprogram] = $programcountarray3[$badprogram].Replace("/I", "/X")
       Write-Host($programcountarray3[$badprogram])
       cmd.exe /c ($programcountarray3[$badprogram])
       Write-Host("Press ENTER when uninstalled")
