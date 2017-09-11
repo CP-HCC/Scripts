@@ -454,8 +454,10 @@ if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe"){
       Write-Host("Press Enter once download is complete")
       Read-Host
       if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
-         Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
-         #cmd.exe /c "mseinstall.exe /s /runwgacheck /o" <<<<<<<<<-----------------------------------------------------------------------I NEED TO TEST THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+         #Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+         Set-Location "C:\Users\$env:Username\Desktop"
+         cmd.exe /c "mseinstall.exe /s /runwgacheck /o"
+         Set-Location "C:\Windows\System32"
          $loopnumber = 1
       }else{
          Write-Host("Download is not complete")
