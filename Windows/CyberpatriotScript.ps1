@@ -93,17 +93,17 @@ Read-Host
 
 #NEW VERSION. Sets them on any computer regardless of if they have been altered previously
 secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
-$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'NewAdministratorName', 'NewGuestName')
+$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge ', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'NewAdministratorName', 'NewGuestName')
 $SecurityPolicyValues = @(8, 1, 10, 30, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, "PoopyDumbGuy", "PoopyFreeloader")
 $ivalue = 0
-for ($i = 0; $i -ne 15; $i++){
+for ($i = 0; $i -ne 17; $i++){
    [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
    $PolicyValueChar = $PolicyLine.IndexOf('=')
    [String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+2)
-   if ($i -eq 3){
-      [String]$PolicyValue = $PolicyValue.Substring(0, ($PolicyValue.IndexOf('C:\secpol.cfg:83')) - 1)
-   }else{
-   }
+   #if ($i -eq 3){
+   #   [String]$PolicyValue = $PolicyValue.Substring(0, ($PolicyValue.IndexOf('C:\secpol.cfg:83')) - 1)
+   #}else{
+   #}
    [String]$StringSecurityPolicyArray = $SecurityPolicyArray[$i]
    [String]$StringSecurityPolicyValues = $SecurityPolicyValues[$ivalue]
    [String]$OldPolicy = ($StringSecurityPolicyArray + " = " + $PolicyValue)
