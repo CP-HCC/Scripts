@@ -87,14 +87,14 @@ Read-Host
 #-----------------------------------------------------------------------------------------------------------------
 #OLD VERSION. It only sets them correctly if the computer is on default security policies
 #secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
-#(gc C:\secpol.cfg) -replace ("MinimumPasswordLength = 0", "MinimumPasswordLength = 8") -replace ("PasswordComplexity = 0", "PasswordComplexity = 1") -replace ("MinimumPasswordAge = 0", "MinimumPasswordAge = 10") -replace ("MaximumPasswordAge = 42", "MaximumPasswordAge = 30") -replace ("PasswordHistorySize = 0", "PasswordHistorySize = 5") -replace ("ClearTextPassword = 1", "ClearTextPassword = 0") -replace ("LockoutBadCount = 0", "LockoutBadCount = 3")| Out-File C:\secpol.cfg
+#(gc C:\secpol.cfg) -replace ("MinimumPasswordLength = 0", "MinimumPasswordLength = 8") -replace ("PasswordComplexity = 0", "PasswordComplexity = 1") -replace ("MinimumPasswordAge = 0", "MinimumPasswordAge = 10") -replace ("MaximumPasswordAge = 42", "MaximumPasswordAge = 30") -replace ("PasswordHistorySize = 0", "PasswordHistorySize = 5") -replace ("ClearTextPassword = 1", "ClearTextPassword = 0") -replace ("LockoutBadCount = 0", "LockoutBadCount = 3") -replace ('NewAdministratorName = "Administrator"', 'NewAdministratorName = "PoopyDumbGuy"') -replace ('NewGuestName = "Guest"', 'NewGuestName = "PoopyFreeloader"') | Out-File C:\secpol.cfg
 #secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
 #rm -force c:\secpol.cfg
 
 #NEW VERSION. Sets them on any computer regardless of if they have been altered previously
 secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
-$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon')
-$SecurityPolicyValues = @(8, 1, 10, 30, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3)
+$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'NewAdministratorName', 'NewGuestName')
+$SecurityPolicyValues = @(8, 1, 10, 30, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, "PoopyDumbGuy", "PoopyFreeloader")
 $ivalue = 0
 for ($i = 0; $i -ne 15; $i++){
    [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
@@ -361,84 +361,84 @@ enable-computerrestore -drive "C:\"
 #Disables unwanted Windows Features
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
-DISM /online /disable-feature /Featurename:TelnetClient
-DISM /online /disable-feature /Featurename:TelnetServer
-DISM /online /disable-feature /Featurename:TFTPClient
-DISM /online /disable-feature /FeatureName:IIS-WebServerRole
-DISM /online /disable-feature /FeatureName:IIS-WebServer
-DISM /online /disable-feature /FeatureName:IIS-CommonHttpFeatures
-DISM /online /disable-feature /FeatureName:IIS-HttpErrors
-DISM /online /disable-feature /FeatureName:IIS-HttpRedirect
-DISM /online /disable-feature /FeatureName:IIS-ApplicationDevelopment
-DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility
-DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility45
-DISM /online /disable-feature /FeatureName:IIS-HealthAndDiagnostics
-DISM /online /disable-feature /FeatureName:IIS-HttpLogging
-DISM /online /disable-feature /FeatureName:IIS-LoggingLibraries
-DISM /online /disable-feature /FeatureName:IIS-RequestMonitor
-DISM /online /disable-feature /FeatureName:IIS-HttpTracing
-DISM /online /disable-feature /FeatureName:IIS-Security
-DISM /online /disable-feature /FeatureName:IIS-URLAuthorization
-DISM /online /disable-feature /FeatureName:IIS-RequestFiltering
-DISM /online /disable-feature /FeatureName:IIS-IPSecurity
-DISM /online /disable-feature /FeatureName:IIS-Performance
-DISM /online /disable-feature /FeatureName:IIS-HttpCompressionDynamic
-DISM /online /disable-feature /FeatureName:IIS-WebServerManagementTools
-DISM /online /disable-feature /FeatureName:IIS-ManagementScriptingTools
-DISM /online /disable-feature /FeatureName:IIS-IIS6ManagementCompatibility
-DISM /online /disable-feature /FeatureName:IIS-Metabase
-DISM /online /disable-feature /FeatureName:IIS-HostableWebCore
-DISM /online /disable-feature /FeatureName:IIS-CertProvider
-DISM /online /disable-feature /FeatureName:IIS-WindowsAuthentication
-DISM /online /disable-feature /FeatureName:IIS-DigestAuthentication
-DISM /online /disable-feature /FeatureName:IIS-ClientCertificateMappingAuthentication
-DISM /online /disable-feature /FeatureName:IIS-IISCertificateMappingAuthentication
-DISM /online /disable-feature /FeatureName:IIS-ODBCLogging
-DISM /online /disable-feature /FeatureName:IIS-StaticContent
-DISM /online /disable-feature /FeatureName:IIS-DefaultDocument
-DISM /online /disable-feature /FeatureName:IIS-DirectoryBrowsing
-DISM /online /disable-feature /FeatureName:IIS-WebDAV
-DISM /online /disable-feature /FeatureName:IIS-WebSockets
-DISM /online /disable-feature /FeatureName:IIS-ApplicationInit
-DISM /online /disable-feature /FeatureName:IIS-ASPNET
-DISM /online /disable-feature /FeatureName:IIS-ASPNET45
-DISM /online /disable-feature /FeatureName:IIS-ASP
-DISM /online /disable-feature /FeatureName:IIS-CGI
-DISM /online /disable-feature /FeatureName:IIS-ISAPIExtensions
-DISM /online /disable-feature /FeatureName:IIS-ISAPIFilter
-DISM /online /disable-feature /FeatureName:IIS-ServerSideIncludes
-DISM /online /disable-feature /FeatureName:IIS-CustomLogging
-DISM /online /disable-feature /FeatureName:IIS-BasicAuthentication
-DISM /online /disable-feature /FeatureName:IIS-HttpCompressionStatic
-DISM /online /disable-feature /FeatureName:IIS-ManagementConsole
-DISM /online /disable-feature /FeatureName:IIS-ManagementService
-DISM /online /disable-feature /FeatureName:IIS-WMICompatibility
-DISM /online /disable-feature /FeatureName:IIS-LegacyScripts
-DISM /online /disable-feature /FeatureName:IIS-LegacySnapIn
-DISM /online /disable-feature /FeatureName:IIS-FTPServer
-DISM /online /disable-feature /FeatureName:IIS-FTPSvc
-DISM /online /disable-feature /FeatureName:IIS-FTPExtensibility
-DISM /online /disable-feature /FeatureName:MediaPlayback
-DISM /online /disable-feature /FeatureName:WindowsMediaPlayer
-DISM /online /disable-feature /FeatureName:MediaCenter
-DISM /online /disable-feature /FeatureName:WAS-WindowsActivationService
-DISM /online /disable-feature /FeatureName:WAS-ProcessModel
-DISM /online /disable-feature /FeatureName:WAS-NetFxEnvironment
-DISM /online /disable-feature /FeatureName:WAS-ConfigurationAPI
-DISM /online /disable-feature /FeatureName:Solitaire
-DISM /online /disable-feature /FeatureName:Hearts
-DISM /online /disable-feature /FeatureName:SpiderSolitare
-DISM /online /disable-feature /FeatureName:MoreGames
-DISM /online /disable-feature /FeatureName:FreeCell
-DISM /online /disable-feature /FeatureName:MineSweeper
-DISM /online /disable-feature /FeatureName:PurplePlace
-DISM /online /disable-feature /FeatureName:Chess
-DISM /online /disable-feature /FeatureName:Shanghai
-DISM /online /disable-feature /FeatureName:InternetGames
-DISM /online /disable-feature /FeatureName:InternetCheckers
-DISM /online /disable-feature /FeatureName:InternetBackgammon
-DISM /online /disable-feature /FeatureName:Internet Spades
-DISM /online /disable-feature /FeatureName:SimpleTCP
+DISM /online /disable-feature /Featurename:TelnetClient /norestart
+DISM /online /disable-feature /Featurename:TelnetServer /norestart
+DISM /online /disable-feature /Featurename:TFTPClient /norestart
+DISM /online /disable-feature /FeatureName:IIS-WebServerRole /norestart
+DISM /online /disable-feature /FeatureName:IIS-WebServer /norestart
+DISM /online /disable-feature /FeatureName:IIS-CommonHttpFeatures /norestart
+DISM /online /disable-feature /FeatureName:IIS-HttpErrors /norestart
+DISM /online /disable-feature /FeatureName:IIS-HttpRedirect /norestart
+DISM /online /disable-feature /FeatureName:IIS-ApplicationDevelopment /norestart
+DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility /norestart
+DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility45 /norestart
+DISM /online /disable-feature /FeatureName:IIS-HealthAndDiagnostics /norestart
+DISM /online /disable-feature /FeatureName:IIS-HttpLogging /norestart
+DISM /online /disable-feature /FeatureName:IIS-LoggingLibraries /norestart
+DISM /online /disable-feature /FeatureName:IIS-RequestMonitor /norestart
+DISM /online /disable-feature /FeatureName:IIS-HttpTracing /norestart
+DISM /online /disable-feature /FeatureName:IIS-Security /norestart
+DISM /online /disable-feature /FeatureName:IIS-URLAuthorization /norestart
+DISM /online /disable-feature /FeatureName:IIS-RequestFiltering /norestart
+DISM /online /disable-feature /FeatureName:IIS-IPSecurity /norestart
+DISM /online /disable-feature /FeatureName:IIS-Performance /norestart
+DISM /online /disable-feature /FeatureName:IIS-HttpCompressionDynamic /norestart
+DISM /online /disable-feature /FeatureName:IIS-WebServerManagementTools /norestart
+DISM /online /disable-feature /FeatureName:IIS-ManagementScriptingTools /norestart
+DISM /online /disable-feature /FeatureName:IIS-IIS6ManagementCompatibility /norestart
+DISM /online /disable-feature /FeatureName:IIS-Metabase /norestart
+DISM /online /disable-feature /FeatureName:IIS-HostableWebCore /norestart
+DISM /online /disable-feature /FeatureName:IIS-CertProvider /norestart
+DISM /online /disable-feature /FeatureName:IIS-WindowsAuthentication /norestart
+DISM /online /disable-feature /FeatureName:IIS-DigestAuthentication /norestart
+DISM /online /disable-feature /FeatureName:IIS-ClientCertificateMappingAuthentication /norestart
+DISM /online /disable-feature /FeatureName:IIS-IISCertificateMappingAuthentication /norestart
+DISM /online /disable-feature /FeatureName:IIS-ODBCLogging /norestart
+DISM /online /disable-feature /FeatureName:IIS-StaticContent /norestart
+DISM /online /disable-feature /FeatureName:IIS-DefaultDocument /norestart
+DISM /online /disable-feature /FeatureName:IIS-DirectoryBrowsing /norestart
+DISM /online /disable-feature /FeatureName:IIS-WebDAV /norestart
+DISM /online /disable-feature /FeatureName:IIS-WebSockets /norestart
+DISM /online /disable-feature /FeatureName:IIS-ApplicationInit /norestart
+DISM /online /disable-feature /FeatureName:IIS-ASPNET /norestart
+DISM /online /disable-feature /FeatureName:IIS-ASPNET45 /norestart
+DISM /online /disable-feature /FeatureName:IIS-ASP /norestart
+DISM /online /disable-feature /FeatureName:IIS-CGI /norestart
+DISM /online /disable-feature /FeatureName:IIS-ISAPIExtensions /norestart
+DISM /online /disable-feature /FeatureName:IIS-ISAPIFilter /norestart
+DISM /online /disable-feature /FeatureName:IIS-ServerSideIncludes /norestart
+DISM /online /disable-feature /FeatureName:IIS-CustomLogging /norestart
+DISM /online /disable-feature /FeatureName:IIS-BasicAuthentication /norestart
+DISM /online /disable-feature /FeatureName:IIS-HttpCompressionStatic /norestart
+DISM /online /disable-feature /FeatureName:IIS-ManagementConsole /norestart
+DISM /online /disable-feature /FeatureName:IIS-ManagementService /norestart
+DISM /online /disable-feature /FeatureName:IIS-WMICompatibility /norestart
+DISM /online /disable-feature /FeatureName:IIS-LegacyScripts /norestart
+DISM /online /disable-feature /FeatureName:IIS-LegacySnapIn /norestart
+DISM /online /disable-feature /FeatureName:IIS-FTPServer /norestart
+DISM /online /disable-feature /FeatureName:IIS-FTPSvc /norestart
+DISM /online /disable-feature /FeatureName:IIS-FTPExtensibility /norestart
+DISM /online /disable-feature /FeatureName:MediaPlayback /norestart
+DISM /online /disable-feature /FeatureName:WindowsMediaPlayer /norestart
+DISM /online /disable-feature /FeatureName:MediaCenter /norestart
+DISM /online /disable-feature /FeatureName:WAS-WindowsActivationService /norestart
+DISM /online /disable-feature /FeatureName:WAS-ProcessModel /norestart
+DISM /online /disable-feature /FeatureName:WAS-NetFxEnvironment /norestart
+DISM /online /disable-feature /FeatureName:WAS-ConfigurationAPI /norestart
+DISM /online /disable-feature /FeatureName:Solitaire /norestart
+DISM /online /disable-feature /FeatureName:Hearts /norestart
+DISM /online /disable-feature /FeatureName:SpiderSolitare /norestart
+DISM /online /disable-feature /FeatureName:MoreGames /norestart
+DISM /online /disable-feature /FeatureName:FreeCell /norestart
+DISM /online /disable-feature /FeatureName:MineSweeper /norestart
+DISM /online /disable-feature /FeatureName:PurblePlace /norestart
+DISM /online /disable-feature /FeatureName:Chess /norestart
+DISM /online /disable-feature /FeatureName:Shanghai /norestart
+DISM /online /disable-feature /FeatureName:InternetGames /norestart
+DISM /online /disable-feature /FeatureName:InternetCheckers /norestart
+DISM /online /disable-feature /FeatureName:InternetBackgammon /norestart
+DISM /online /disable-feature /FeatureName:Internet Spades /norestart
+DISM /online /disable-feature /FeatureName:SimpleTCP /norestart
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Downloads and launches the installer for Windows Security Essentials
@@ -455,6 +455,7 @@ if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe"){
       Read-Host
       if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
          Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+         #cmd.exe /c "mseinstall.exe /s /runwgacheck /o" <<<<<<<<<-----------------------------------------------------------------------I NEED TO TEST THIS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
          $loopnumber = 1
       }else{
          Write-Host("Download is not complete")
@@ -637,10 +638,13 @@ while ($loopnumber -ne 1){
       Write-Host("Enter the number of the program")
       $badprogram = Read-Host
       $programcountarray3[$badprogram] = $programcountarray3[$badprogram].Replace("/I", "/X")
+      if($programcountarray3[$badprogram].contains(“MsiExec.exe”)){
+      $programcountarray3[$badprogram] = ($programcountarray3[$badprogram] + " /qn /norestart")
+      Write-Host($a)
+      }else{
+      }
       Write-Host($programcountarray3[$badprogram])
       cmd.exe /c ($programcountarray3[$badprogram])
-      Write-Host("Press ENTER when uninstalled")
-      Read-Host
    }
    if($deleteprogram -eq "n"){
       $loopnumber = 1
@@ -728,6 +732,7 @@ Set-Location -Path "C:\Windows\system32"
 #Verified Operating Systems: Windows 7
 #It may need some polishing
 #-----------------------------------------------------------------------------------------------------------------
+Write-Host("Scanning for updates. This will take way too long.")
 $criteria="IsInstalled=0 and Type='Software'"
 $updateSession = new-object -com "Microsoft.Update.Session"
 $updates=$updateSession.CreateupdateSearcher().Search($criteria).Updates
