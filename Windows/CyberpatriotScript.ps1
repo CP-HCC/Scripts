@@ -272,84 +272,162 @@ enable-computerrestore -drive "C:\"
 #Disables unwanted Windows Features
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
-DISM /online /disable-feature /Featurename:TelnetClient /norestart
-DISM /online /disable-feature /Featurename:TelnetServer /norestart
-DISM /online /disable-feature /Featurename:TFTPClient /norestart
-DISM /online /disable-feature /FeatureName:IIS-WebServerRole /norestart
-DISM /online /disable-feature /FeatureName:IIS-WebServer /norestart
-DISM /online /disable-feature /FeatureName:IIS-CommonHttpFeatures /norestart
-DISM /online /disable-feature /FeatureName:IIS-HttpErrors /norestart
-DISM /online /disable-feature /FeatureName:IIS-HttpRedirect /norestart
-DISM /online /disable-feature /FeatureName:IIS-ApplicationDevelopment /norestart
-DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility /norestart
-DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility45 /norestart
-DISM /online /disable-feature /FeatureName:IIS-HealthAndDiagnostics /norestart
-DISM /online /disable-feature /FeatureName:IIS-HttpLogging /norestart
-DISM /online /disable-feature /FeatureName:IIS-LoggingLibraries /norestart
-DISM /online /disable-feature /FeatureName:IIS-RequestMonitor /norestart
-DISM /online /disable-feature /FeatureName:IIS-HttpTracing /norestart
-DISM /online /disable-feature /FeatureName:IIS-Security /norestart
-DISM /online /disable-feature /FeatureName:IIS-URLAuthorization /norestart
-DISM /online /disable-feature /FeatureName:IIS-RequestFiltering /norestart
-DISM /online /disable-feature /FeatureName:IIS-IPSecurity /norestart
-DISM /online /disable-feature /FeatureName:IIS-Performance /norestart
-DISM /online /disable-feature /FeatureName:IIS-HttpCompressionDynamic /norestart
-DISM /online /disable-feature /FeatureName:IIS-WebServerManagementTools /norestart
-DISM /online /disable-feature /FeatureName:IIS-ManagementScriptingTools /norestart
-DISM /online /disable-feature /FeatureName:IIS-IIS6ManagementCompatibility /norestart
-DISM /online /disable-feature /FeatureName:IIS-Metabase /norestart
-DISM /online /disable-feature /FeatureName:IIS-HostableWebCore /norestart
-DISM /online /disable-feature /FeatureName:IIS-CertProvider /norestart
-DISM /online /disable-feature /FeatureName:IIS-WindowsAuthentication /norestart
-DISM /online /disable-feature /FeatureName:IIS-DigestAuthentication /norestart
-DISM /online /disable-feature /FeatureName:IIS-ClientCertificateMappingAuthentication /norestart
-DISM /online /disable-feature /FeatureName:IIS-IISCertificateMappingAuthentication /norestart
-DISM /online /disable-feature /FeatureName:IIS-ODBCLogging /norestart
-DISM /online /disable-feature /FeatureName:IIS-StaticContent /norestart
-DISM /online /disable-feature /FeatureName:IIS-DefaultDocument /norestart
-DISM /online /disable-feature /FeatureName:IIS-DirectoryBrowsing /norestart
-DISM /online /disable-feature /FeatureName:IIS-WebDAV /norestart
-DISM /online /disable-feature /FeatureName:IIS-WebSockets /norestart
-DISM /online /disable-feature /FeatureName:IIS-ApplicationInit /norestart
-DISM /online /disable-feature /FeatureName:IIS-ASPNET /norestart
-DISM /online /disable-feature /FeatureName:IIS-ASPNET45 /norestart
-DISM /online /disable-feature /FeatureName:IIS-ASP /norestart
-DISM /online /disable-feature /FeatureName:IIS-CGI /norestart
-DISM /online /disable-feature /FeatureName:IIS-ISAPIExtensions /norestart
-DISM /online /disable-feature /FeatureName:IIS-ISAPIFilter /norestart
-DISM /online /disable-feature /FeatureName:IIS-ServerSideIncludes /norestart
-DISM /online /disable-feature /FeatureName:IIS-CustomLogging /norestart
-DISM /online /disable-feature /FeatureName:IIS-BasicAuthentication /norestart
-DISM /online /disable-feature /FeatureName:IIS-HttpCompressionStatic /norestart
-DISM /online /disable-feature /FeatureName:IIS-ManagementConsole /norestart
-DISM /online /disable-feature /FeatureName:IIS-ManagementService /norestart
-DISM /online /disable-feature /FeatureName:IIS-WMICompatibility /norestart
-DISM /online /disable-feature /FeatureName:IIS-LegacyScripts /norestart
-DISM /online /disable-feature /FeatureName:IIS-LegacySnapIn /norestart
-DISM /online /disable-feature /FeatureName:IIS-FTPServer /norestart
-DISM /online /disable-feature /FeatureName:IIS-FTPSvc /norestart
-DISM /online /disable-feature /FeatureName:IIS-FTPExtensibility /norestart
-DISM /online /disable-feature /FeatureName:MediaPlayback /norestart
-DISM /online /disable-feature /FeatureName:WindowsMediaPlayer /norestart
-DISM /online /disable-feature /FeatureName:MediaCenter /norestart
-DISM /online /disable-feature /FeatureName:WAS-WindowsActivationService /norestart
-DISM /online /disable-feature /FeatureName:WAS-ProcessModel /norestart
-DISM /online /disable-feature /FeatureName:WAS-NetFxEnvironment /norestart
-DISM /online /disable-feature /FeatureName:WAS-ConfigurationAPI /norestart
-DISM /online /disable-feature /FeatureName:Solitaire /norestart
-DISM /online /disable-feature /FeatureName:Hearts /norestart
-DISM /online /disable-feature /FeatureName:SpiderSolitare /norestart
-DISM /online /disable-feature /FeatureName:MoreGames /norestart
-DISM /online /disable-feature /FeatureName:FreeCell /norestart
-DISM /online /disable-feature /FeatureName:MineSweeper /norestart
-DISM /online /disable-feature /FeatureName:PurblePlace /norestart
-DISM /online /disable-feature /FeatureName:Chess /norestart
-DISM /online /disable-feature /FeatureName:Shanghai /norestart
-DISM /online /disable-feature /FeatureName:InternetGames /norestart
-DISM /online /disable-feature /FeatureName:InternetCheckers /norestart
-DISM /online /disable-feature /FeatureName:InternetBackgammon /norestart
-DISM /online /disable-feature /FeatureName:Internet Spades /norestart
-DISM /online /disable-feature /FeatureName:SimpleTCP /norestart
+Write-Host("Disabling TelnetClient...")
+DISM /online /disable-feature /Featurename:TelnetClient /norestart | Out-Null
+Write-Host("Disabling TelnetServer...")
+DISM /online /disable-feature /Featurename:TelnetServer /norestart | Out-Null
+Write-Host("Disabling TFTPClient...")
+DISM /online /disable-feature /Featurename:TFTPClient /norestart | Out-Null
+Write-Host("Disabling IIS-WebServerRole...")
+DISM /online /disable-feature /FeatureName:IIS-WebServerRole /norestart | Out-Null
+Write-Host("Disabling IIS-WebServer...")
+DISM /online /disable-feature /FeatureName:IIS-WebServer /norestart | Out-Null
+Write-Host("Disabling IIS-CommonHttpFeatures...")
+DISM /online /disable-feature /FeatureName:IIS-CommonHttpFeatures /norestart | Out-Null
+Write-Host("Disabling IIS-HttpErrors...")
+DISM /online /disable-feature /FeatureName:IIS-HttpErrors /norestart | Out-Null
+Write-Host("Disabling IIS-HttpRedirect...")
+DISM /online /disable-feature /FeatureName:IIS-HttpRedirect /norestart | Out-Null
+Write-Host("Disabling IIS-ApplicationDevelopment...")
+DISM /online /disable-feature /FeatureName:IIS-ApplicationDevelopment /norestart | Out-Null
+Write-Host("Disabling IIS-NetFxExtensibility...")
+DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility /norestart | Out-Null
+Write-Host("Disabling IIS-NetFxExtensibility45...")
+DISM /online /disable-feature /FeatureName:IIS-NetFxExtensibility45 /norestart | Out-Null
+Write-Host("Disabling IIS-HealthAndDiagnostics...")
+DISM /online /disable-feature /FeatureName:IIS-HealthAndDiagnostics /norestart | Out-Null
+Write-Host("Disabling IIS-HttpLogging...")
+DISM /online /disable-feature /FeatureName:IIS-HttpLogging /norestart | Out-Null
+Write-Host("Disabling IIS-LoggingLibraries...")
+DISM /online /disable-feature /FeatureName:IIS-LoggingLibraries /norestart | Out-Null
+Write-Host("Disabling IIS-RequestMonitor...")
+DISM /online /disable-feature /FeatureName:IIS-RequestMonitor /norestart | Out-Null
+Write-Host("Disabling IIS-HttpTracing...")
+DISM /online /disable-feature /FeatureName:IIS-HttpTracing /norestart | Out-Null
+Write-Host("Disabling IIS-Security...")
+DISM /online /disable-feature /FeatureName:IIS-Security /norestart | Out-Null
+Write-Host("Disabling IIS-URLAuthorization...")
+DISM /online /disable-feature /FeatureName:IIS-URLAuthorization /norestart | Out-Null
+Write-Host("Disabling IIS-RequestFiltering...")
+DISM /online /disable-feature /FeatureName:IIS-RequestFiltering /norestart | Out-Null
+Write-Host("Disabling IIS-IPSecurity...")
+DISM /online /disable-feature /FeatureName:IIS-IPSecurity /norestart | Out-Null
+Write-Host("Disabling IIS-Performance...")
+DISM /online /disable-feature /FeatureName:IIS-Performance /norestart | Out-Null
+Write-Host("Disabling IIS-HttpCompressionDynamic...")
+DISM /online /disable-feature /FeatureName:IIS-HttpCompressionDynamic /norestart | Out-Null
+Write-Host("Disabling IIS-WebServerManagementTools...")
+DISM /online /disable-feature /FeatureName:IIS-WebServerManagementTools /norestart | Out-Null
+Write-Host("Disabling IIS-ManagementScriptingTools...")
+DISM /online /disable-feature /FeatureName:IIS-ManagementScriptingTools /norestart | Out-Null
+Write-Host("Disabling IIS-IIS6ManagementCompatibility...")
+DISM /online /disable-feature /FeatureName:IIS-IIS6ManagementCompatibility /norestart | Out-Null
+Write-Host("Disabling IIS-Metabase...")
+DISM /online /disable-feature /FeatureName:IIS-Metabase /norestart | Out-Null
+Write-Host("Disabling IIS-HostableWebCore...")
+DISM /online /disable-feature /FeatureName:IIS-HostableWebCore /norestart | Out-Null
+Write-Host("Disabling IIS-CertProvider...")
+DISM /online /disable-feature /FeatureName:IIS-CertProvider /norestart | Out-Null
+Write-Host("Disabling IIS-WindowsAuthentication...")
+DISM /online /disable-feature /FeatureName:IIS-WindowsAuthentication /norestart | Out-Null
+Write-Host("Disabling IIS-DigestAuthentication...")
+DISM /online /disable-feature /FeatureName:IIS-DigestAuthentication /norestart | Out-Null
+Write-Host("Disabling IIS-ClientCertificateMappingAuthentication...")
+DISM /online /disable-feature /FeatureName:IIS-ClientCertificateMappingAuthentication /norestart | Out-Null
+Write-Host("Disabling IIS-IISCertificateMappingAuthentication...")
+DISM /online /disable-feature /FeatureName:IIS-IISCertificateMappingAuthentication /norestart | Out-Null
+Write-Host("Disabling IIS-ODBCLogging...")
+DISM /online /disable-feature /FeatureName:IIS-ODBCLogging /norestart | Out-Null
+Write-Host("Disabling IIS-StaticContent...")
+DISM /online /disable-feature /FeatureName:IIS-StaticContent /norestart | Out-Null
+Write-Host("Disabling IIS-DefaultDocument...")
+DISM /online /disable-feature /FeatureName:IIS-DefaultDocument /norestart | Out-Null
+Write-Host("Disabling IIS-DirectoryBrowsing...")
+DISM /online /disable-feature /FeatureName:IIS-DirectoryBrowsing /norestart | Out-Null
+Write-Host("Disabling IIS-WebDAV...")
+DISM /online /disable-feature /FeatureName:IIS-WebDAV /norestart | Out-Null
+Write-Host("Disabling IIS-WebSockets...")
+DISM /online /disable-feature /FeatureName:IIS-WebSockets /norestart | Out-Null
+Write-Host("Disabling IIS-ApplicationInit...")
+DISM /online /disable-feature /FeatureName:IIS-ApplicationInit /norestart | Out-Null
+Write-Host("Disabling IIS-ASPNET...")
+DISM /online /disable-feature /FeatureName:IIS-ASPNET /norestart | Out-Null
+Write-Host("Disabling IIS-ASPNET45...")
+DISM /online /disable-feature /FeatureName:IIS-ASPNET45 /norestart | Out-Null
+Write-Host("Disabling IIS-ASP...")
+DISM /online /disable-feature /FeatureName:IIS-ASP /norestart | Out-Null
+Write-Host("Disabling IIS-CGI...")
+DISM /online /disable-feature /FeatureName:IIS-CGI /norestart | Out-Null
+Write-Host("Disabling IIS-ISAPIExtensions...")
+DISM /online /disable-feature /FeatureName:IIS-ISAPIExtensions /norestart | Out-Null
+Write-Host("Disabling IIS-ISAPIFilter...")
+DISM /online /disable-feature /FeatureName:IIS-ISAPIFilter /norestart | Out-Null
+Write-Host("Disabling IIS-ServerSideIncludes...")
+DISM /online /disable-feature /FeatureName:IIS-ServerSideIncludes /norestart | Out-Null
+Write-Host("Disabling IIS-CustomLogging...")
+DISM /online /disable-feature /FeatureName:IIS-CustomLogging /norestart | Out-Null
+Write-Host("Disabling IIS-BasicAuthentication...")
+DISM /online /disable-feature /FeatureName:IIS-BasicAuthentication /norestart | Out-Null
+Write-Host("Disabling IIS-HttpCompressionStatic...")
+DISM /online /disable-feature /FeatureName:IIS-HttpCompressionStatic /norestart | Out-Null
+Write-Host("Disabling IIS-ManagementConsole...")
+DISM /online /disable-feature /FeatureName:IIS-ManagementConsole /norestart | Out-Null
+Write-Host("Disabling IIS-ManagementService...")
+DISM /online /disable-feature /FeatureName:IIS-ManagementService /norestart | Out-Null
+Write-Host("Disabling IIS-WMICompatibility...")
+DISM /online /disable-feature /FeatureName:IIS-WMICompatibility /norestart | Out-Null
+Write-Host("Disabling IIS-LegacyScripts...")
+DISM /online /disable-feature /FeatureName:IIS-LegacyScripts /norestart | Out-Null
+Write-Host("Disabling IIS-LegacySnapIn...")
+DISM /online /disable-feature /FeatureName:IIS-LegacySnapIn /norestart | Out-Null
+Write-Host("Disabling IIS-FTPServer...")
+DISM /online /disable-feature /FeatureName:IIS-FTPServer /norestart | Out-Null
+Write-Host("Disabling IIS-FTPSvc...")
+DISM /online /disable-feature /FeatureName:IIS-FTPSvc /norestart | Out-Null
+Write-Host("Disabling IIS-FTPExtensibility...")
+DISM /online /disable-feature /FeatureName:IIS-FTPExtensibility /norestart | Out-Null
+Write-Host("Disabling MediaPlayback...")
+DISM /online /disable-feature /FeatureName:MediaPlayback /norestart | Out-Null
+Write-Host("Disabling WindowsMediaPlayer...")
+DISM /online /disable-feature /FeatureName:WindowsMediaPlayer /norestart | Out-Null
+Write-Host("Disabling MediaCenter...")
+DISM /online /disable-feature /FeatureName:MediaCenter /norestart | Out-Null
+Write-Host("Disabling WAS-WindowsActivationService...")
+DISM /online /disable-feature /FeatureName:WAS-WindowsActivationService /norestart | Out-Null
+Write-Host("Disabling WAS-ProcessModel...")
+DISM /online /disable-feature /FeatureName:WAS-ProcessModel /norestart | Out-Null
+Write-Host("Disabling WAS-NetFxEnvironment...")
+DISM /online /disable-feature /FeatureName:WAS-NetFxEnvironment /norestart | Out-Null
+Write-Host("Disabling WAS-ConfigurationAPI...")
+DISM /online /disable-feature /FeatureName:WAS-ConfigurationAPI /norestart | Out-Null
+Write-Host("Disabling Solitaire...")
+DISM /online /disable-feature /FeatureName:Solitaire /norestart | Out-Null
+Write-Host("Disabling Hearts...")
+DISM /online /disable-feature /FeatureName:Hearts /norestart | Out-Null
+Write-Host("Disabling SpiderSolitare...")
+DISM /online /disable-feature /FeatureName:SpiderSolitare /norestart | Out-Null
+Write-Host("Disabling MoreGames...")
+DISM /online /disable-feature /FeatureName:MoreGames /norestart | Out-Null
+Write-Host("Disabling FreeCell...")
+DISM /online /disable-feature /FeatureName:FreeCell /norestart | Out-Null
+Write-Host("Disabling MineSweeper...")
+DISM /online /disable-feature /FeatureName:MineSweeper /norestart | Out-Null
+Write-Host("Disabling PurblePlace...")
+DISM /online /disable-feature /FeatureName:PurblePlace /norestart | Out-Null
+Write-Host("Disabling Chess...")
+DISM /online /disable-feature /FeatureName:Chess /norestart | Out-Null
+Write-Host("Disabling Shanghai...")
+DISM /online /disable-feature /FeatureName:Shanghai /norestart | Out-Null
+Write-Host("Disabling InternetGames...")
+DISM /online /disable-feature /FeatureName:InternetGames /norestart | Out-Null
+Write-Host("Disabling InternetCheckers...")
+DISM /online /disable-feature /FeatureName:InternetCheckers /norestart | Out-Null
+Write-Host("Disabling InternetBackgammon...")
+DISM /online /disable-feature /FeatureName:InternetBackgammon /norestart | Out-Null
+Write-Host("Disabling Internet Spades...")
+DISM /online /disable-feature /FeatureName:Internet Spades /norestart | Out-Null
+Write-Host("Disabling SimpleTCP...")
+DISM /online /disable-feature /FeatureName:SimpleTCP /norestart | Out-Null
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Downloads and launches the installer for Windows Security Essentials
