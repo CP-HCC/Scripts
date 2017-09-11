@@ -1,80 +1,3 @@
-#-----------------------------------------------------------------------------------------------------------------
-#
-#Installs .NET 4.5 and Powershell 4
-#TO-DO: Needs to run in background
-#-----------------------------------------------------------------------------------------------------------------
-Write-Host("--------------------------------------------------------------------------")
-Write-Host("Checking for Powershell 4.0....")
-$poop = 0
-$netversion = (Get-ItemProperty ‘HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full’  -Name Release).Release
-if($netversion -lt 378389){
-   Write-Host("Missing .NET 4.5
-Script will now update it, DON'T RESTART IF PROMPTED.")
-   $ie = New-Object -ComObject InternetExplorer.Application
-   $ie.Visible = $true
-   $ie.Navigate("https://www.microsoft.com/en-us/download/details.aspx?id=30653")
-   while($ie.Busy){Sleep 1}
-   $Link=$ie.Document.getElementsByTagName("a") | where-object {$_.innerText -eq 'Download'}
-   $Link.click();
-   $loopnumber = 0
-   $destination = "C:\Users\"+$env:UserName+"\Downloads\dotNetFx45_Full_setup.exe"
-   while ($loopnumber -ne 1){
-      Write-Host("Press Enter once download is complete")
-      Read-Host
-      if(Test-Path $destination){
-         Set-Location ("C:\Users\"+$env:UserName+"\Downloads")
-         .\dotNetFx45_Full_setup.exe /install=agent /silent
-         $loopnumber = 1
-         Set-Location ("C:\Windows\system32")
-         $ie.Quit()
-      }else{
-         Write-Host("Download is not complete")
-      }
-   }
-}else{
-   $poop++
-}
-$psversion = $PSVersionTable.PSVersion.Major
-if($psversion -lt 4){
-   Write-Host("Missing PS 4.0
-Script will now update it, RESTART IF PROMPTED.")
-   $ie = New-Object -ComObject InternetExplorer.Application
-   $ie.Visible = $true
-   $ie.Navigate("https://www.microsoft.com/en-us/download/details.aspx?id=40855")
-   while($ie.Busy){Sleep 1}
-   $Link=$ie.Document.getElementsByTagName("a") | where-object {$_.innerText -eq 'Download'}
-   $Link.click();
-   while($ie.Busy){Sleep 1}
-   $Link=$ie.Document.getElementsByTagName("input") | where-object {$_.value -eq '3'}
-   $Link.click();
-   while($ie.Busy){Sleep 1}
-   $Link=$ie.Document.getElementsByTagName("span") | where-object {$_.innerText -eq 'Next'}
-   $Link.click();
-   $loopnumber = 0
-   $destination = "C:\Users\"+$env:UserName+"\Downloads\Windows6.1-KB2819745-x64-MultiPkg.msu"
-   while ($loopnumber -ne 1){
-      Write-Host("Press Enter once download is complete")
-      Read-Host
-      if(Test-Path $destination){
-         Set-Location ("C:\Users\"+$env:UserName+"\Downloads")
-         .\Windows6.1-KB2819745-x64-MultiPkg.msu /install=agent /silent
-         $loopnumber = 1
-         Set-Location ("C:\Windows\system32")
-         $ie.Quit()
-      }else{
-         Write-Host("Download is not complete")
-      }
-   }
-}else{
-   $poop++
-}
-if($poop -ne 2){
-   Write-Host("The powershell update will require you to restart.
-Start the script again after you have restarted, and Powershell is on version 4.
-Press any key to end.")
-}else{
-   Write-Host("Powershell 4.0 is installed.")
-}
 Write-Host("--------------------------------------------------------------------------
 Welcome to the script. Press any key to start.")
 Read-Host
@@ -93,10 +16,10 @@ Read-Host
 
 #NEW VERSION. Sets them on any computer regardless of if they have been altered previously
 secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
-$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge ', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'NewAdministratorName', 'NewGuestName')
-$SecurityPolicyValues = @(8, 1, 10, 30, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, "PoopyDumbGuy", "PoopyFreeloader")
+$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge ', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName')
+$SecurityPolicyValues = @(8, 1, 10, 30, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, '"PoopyDumbGuy"', '"PoopyFreeloader"')
 $ivalue = 0
-for ($i = 0; $i -ne 17; $i++){
+for ($i = 0; $i -ne 19; $i++){
    [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
    $PolicyValueChar = $PolicyLine.IndexOf('=')
    [String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+2)
@@ -114,7 +37,6 @@ for ($i = 0; $i -ne 17; $i++){
 secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
 (gc C:\secpol.cfg)
 rm -force c:\secpol.cfg
-
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Creates secure passwords for all accounts
@@ -196,17 +118,6 @@ $userslist | Foreach-Object {
       ([adsi](“WinNT://”+$_.caption).replace(“\”,”/”)).SetPassword((generatePasswords($_.name)))
    }
 }
-#-----------------------------------------------------------------------------------------------------------------
-#
-#Disables local Guest and Administrator accounts
-#Verified Operating Systems: Windows 7
-#-----------------------------------------------------------------------------------------------------------------
-$localguest = [ADSI]("WinNT://"+$env:COMPUTERNAME+"/Guest")
-$localguest.userflags.value = $guest.UserFlags.value -BOR 2
-$localguest.SetInfo()
-$localadministrator = [ADSI]("WinNT://"+$env:COMPUTERNAME+"/Administrator")
-$localadministrator.userflags.value = $localadministrator.UserFlags.value -BOR 2
-$localadministrator.SetInfo()
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Sets User Account Control to highest settings
@@ -351,7 +262,7 @@ netsh advfirewall set allprofiles firewallpolicy blockinbound,allowoutbound
 #-----------------------------------------------------------------------------------------------------------------
 netsh advfirewall firewall set rule group="Network Discovery" new enable=no
 netsh advfirewall firewall set rule group="File and Printer Sharing" new enable=no
-if ($share = Get-WmiObject -Class Win32_Share){ #-ComputerName WH0RCUTEACHER -Filter "Name='RobsShare'"){
+if ($share = Get-WmiObject -Class Win32_Share){
 $share.delete()
 }
 #Enables system restore
@@ -448,7 +359,7 @@ if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe"){
 }else{
    $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/amd64/mseinstall.exe"
    $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
-   Invoke-WebRequest $source -OutFile $destination
+   (New-Object System.Net.WebClient).DownloadFile($source, $destination)
    $loopnumber = 0
    while ($loopnumber -ne 1){
       Write-Host("Press Enter once download is complete")
@@ -678,7 +589,7 @@ New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out
 copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
 $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win64/en-US/firefox-55.0.3.complete.mar"
 $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
-Invoke-WebRequest $source -OutFile $destination
+(New-Object System.Net.WebClient).DownloadFile($source, $destination)
 $loopnumber = 0
 while ($loopnumber -ne 1){
    Write-Host("Press Enter once download is complete")
@@ -704,7 +615,7 @@ Set-Location -Path "C:\Windows\system32"
       copy-item -path "C:\Program Files (x86)\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
       $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win32/en-US/firefox-55.0.3.complete.mar"
       $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
-      Invoke-WebRequest $source -OutFile $destination
+      (New-Object System.Net.WebClient).DownloadFile($source, $destination)
       $loopnumber = 0
       while ($loopnumber -ne 1){
          Write-Host("Press Enter once download is complete")
