@@ -16,27 +16,34 @@ Read-Host
 
 #NEW VERSION. Sets them on any computer regardless of if they have been altered previously
 secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
-$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge ', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName')
-$SecurityPolicyValues = @(8, 1, 10, 30, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, '"PoopyDumbGuy"', '"PoopyFreeloader"')
-$ivalue = 0
-for ($i = 0; $i -ne 19; $i++){
-   [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
-   $PolicyValueChar = $PolicyLine.IndexOf('=')
-   [String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+2)
+ $SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 
+
+'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 
+
+'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName', 'ClearTextPassword')
+ $SecurityPolicyValues = @(8, 1, 10, 50, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 'PoopyDumbGuy', 'PoopyFreeloader', 0)
+ $ivalue = 0
+ for ($i = 0; $i -ne 20; $i++){
+    [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
+    $PolicyValueChar = $PolicyLine.IndexOf('=')
+    [String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+2)
+	$PolicyValue
    #if ($i -eq 3){
-   #   [String]$PolicyValue = $PolicyValue.Substring(0, ($PolicyValue.IndexOf('C:\secpol.cfg:83')) - 1)
-   #}else{
-   #}
-   [String]$StringSecurityPolicyArray = $SecurityPolicyArray[$i]
-   [String]$StringSecurityPolicyValues = $SecurityPolicyValues[$ivalue]
-   [String]$OldPolicy = ($StringSecurityPolicyArray + " = " + $PolicyValue)
-   [String]$NewPolicy = ($StringSecurityPolicyArray + " = " + $StringSecurityPolicyValues)
-   (gc C:\secpol.cfg) -replace ($OldPolicy), ($NewPolicy)| Out-File C:\secpol.cfg
-   $ivalue++
-}
-secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
-(gc C:\secpol.cfg)
-rm -force c:\secpol.cfg
+       #[String]$PolicyValue = $PolicyValue.Substring(0, ($PolicyValue.IndexOf('C:\secpol.cfg:83')) - 1)
+    #}else{
+    #}
+    [String]$StringSecurityPolicyArray = $SecurityPolicyArray[$i]
+    [String]$StringSecurityPolicyValues = $SecurityPolicyValues[$ivalue]
+    [String]$OldPolicy = ($StringSecurityPolicyArray + " = " + $PolicyValue)
+$OldPolicy
+    [String]$NewPolicy = ($StringSecurityPolicyArray + " = " + $StringSecurityPolicyValues)
+$NewPolicy
+    (gc C:\secpol.cfg) -replace ($OldPolicy), ($NewPolicy)| Out-File C:\secpol.cfg
+    $ivalue++
+ }
+ secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
+ (gc C:\secpol.cfg)
+ rm -force c:\secpol.cfg
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Creates secure passwords for all accounts
