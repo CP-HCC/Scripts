@@ -24,7 +24,7 @@ for ($i = 0; $i -ne 20; $i++){
    $PolicyValueChar = $PolicyLine.IndexOf('=')
    [String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+2)
    if ($i -eq 3){
-      [String]$PolicyValue = $PolicyValue.Substring(0, ($PolicyValue.IndexOf('C:\secpol.cfg:86')) - 1)
+      [String]$PolicyValue = $PolicyValue.Substring(0, ($PolicyValue.IndexOf(' ')))
    }else{
    }
    [String]$StringSecurityPolicyArray = $SecurityPolicyArray[$i]
