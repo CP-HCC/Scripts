@@ -23,7 +23,7 @@ if($os -eq "64-bit"){
 #NEW VERSION. Sets them on any computer regardless of if they have been altered previously
 secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
 $SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName', 'ClearTextPassword')
-$SecurityPolicyValues = @(8, 1, 10, 30, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 'PoopyDumbGuy', 'PoopyFreeloader', 0)
+$SecurityPolicyValues = @(8, 1, 10, 30, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 'PoopyDumbGuy', 'PoopyFreeloader', 0)
 $ivalue = 0
 for ($i = 0; $i -ne 20; $i++){
    [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
