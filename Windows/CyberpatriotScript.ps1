@@ -1,6 +1,12 @@
 Write-Host("--------------------------------------------------------------------------
 Welcome to the script. Press any key to start.")
 Read-Host
+$os = (Get-WMIObject win32_operatingsystem).OSArchitecture
+if($os -eq "64-bit"){
+   $poop = 1
+}else{
+   $poop = 0
+}
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Sets security policies (Password stuff, and auditing)
@@ -126,6 +132,42 @@ $userslist | Foreach-Object {
 Set-ItemProperty -Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA -Value 4
 #-----------------------------------------------------------------------------------------------------------------
 #
+#Removes unwanted groups
+#Verified Operating Systems: Windows 7
+#-----------------------------------------------------------------------------------------------------------------
+$loopnumber = 0
+while ($loopnumber -ne 1){
+   Write-Host("")
+   Write-Host("Groups")
+   Write-Host("-------------")
+   $groupslist = Get-WmiObject win32_group
+   $groupslist | Foreach-Object {
+      Write-Host($_.name)
+   }
+   Write-Host("")
+   Write-Host("Should any of these groups be removed? y/n")
+   $badgroups = Read-Host
+   if($badgroups -eq "y"){
+      Write-Host("Give me the group name")
+      $badgr = Read-Host
+      $groupslist | Foreach-Object {
+         if($_.name -Contains $badgr){
+            $ADSIComp = [ADSI]("WinNT://"+$env:COMPUTERNAME)
+            $ADSIComp.Delete('Group',$_.name)
+            Write-Host($_.name+" has been removed")
+         }else{
+         }
+      }
+   }
+   if($badgroups -eq "n"){
+      $loopnumber = 1
+   }
+   if($badgroups -ne "y" -and $badgroups -ne "n"){
+      Write-Host("That is neither a y or n")
+   }
+}
+#-----------------------------------------------------------------------------------------------------------------
+#
 #Removes unwanted users
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
@@ -161,42 +203,6 @@ while ($loopnumber -ne 1){
       $loopnumber = 1
    }
    if($badusers -ne "y" -and $badusers -ne "n"){
-      Write-Host("That is neither a y or n")
-   }
-}
-#-----------------------------------------------------------------------------------------------------------------
-#
-#Removes unwanted groups
-#Verified Operating Systems: Windows 7
-#-----------------------------------------------------------------------------------------------------------------
-$loopnumber = 0
-while ($loopnumber -ne 1){
-   Write-Host("")
-   Write-Host("Groups")
-   Write-Host("-------------")
-   $groupslist = Get-WmiObject win32_group
-   $groupslist | Foreach-Object {
-      Write-Host($_.name)
-   }
-   Write-Host("")
-   Write-Host("Should any of these groups be removed? y/n")
-   $badgroups = Read-Host
-   if($badgroups -eq "y"){
-      Write-Host("Give me the group name")
-      $badgr = Read-Host
-      $groupslist | Foreach-Object {
-         if($_.name -Contains $badgr){
-            $ADSIComp = [ADSI]("WinNT://"+$env:COMPUTERNAME)
-            $ADSIComp.Delete('Group',$_.name)
-            Write-Host($_.name+" has been removed")
-         }else{
-         }
-      }
-   }
-   if($badgroups -eq "n"){
-      $loopnumber = 1
-   }
-   if($badgroups -ne "y" -and $badgroups -ne "n"){
       Write-Host("That is neither a y or n")
    }
 }
@@ -433,24 +439,47 @@ DISM /online /disable-feature /FeatureName:SimpleTCP /norestart | Out-Null
 #Downloads and launches the installer for Windows Security Essentials
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
-if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe"){
+if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe" -or Test-Path "C:\Program Files (x86)\Microsoft Security Client\msseces.exe"){
 }else{
-   $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/amd64/mseinstall.exe"
-   $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
-   (New-Object System.Net.WebClient).DownloadFile($source, $destination)
-   $loopnumber = 0
-   while ($loopnumber -ne 1){
-      Write-Host("Press Enter once download is complete")
-      Read-Host
-      if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
-         #Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
-         Set-Location "C:\Users\$env:Username\Desktop"
-         cmd.exe /c "mseinstall.exe /s /runwgacheck /o"
-         Set-Location "C:\Windows\System32"
-         $loopnumber = 1
-      }else{
-         Write-Host("Download is not complete")
+   if($poop -eq 1){
+      $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/amd64/mseinstall.exe"
+      $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+      (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+      $loopnumber = 0
+      while ($loopnumber -ne 1){
+         Write-Host("Press Enter once download is complete")
+         Read-Host
+         if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
+            #Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+            Set-Location "C:\Users\$env:Username\Desktop"
+            cmd.exe /c "mseinstall.exe /s /runwgacheck /o"
+            Set-Location "C:\Windows\System32"
+            $loopnumber = 1
+         }else{
+            Write-Host("Download is not complete")
+         }
       }
+   }
+   if($poop -eq 0){
+      $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/x86/mseinstall.exe"
+      $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+      (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+      $loopnumber = 0
+      while ($loopnumber -ne 1){
+         Write-Host("Press Enter once download is complete")
+         Read-Host
+         if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
+            #Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+            Set-Location "C:\Users\$env:Username\Desktop"
+            cmd.exe /c "mseinstall.exe /s /runwgacheck /o"
+            Set-Location "C:\Windows\System32"
+            $loopnumber = 1
+         }else{
+            Write-Host("Download is not complete")
+         }
+      }
+   }else{
+      Write-Host("What operating system could you possibly have at this point?")
    }
 }
 #-----------------------------------------------------------------------------------------------------------------
@@ -659,62 +688,121 @@ $MSUpdateSettings.save()
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Updates Mozilla Firefox to version 55.0.3
-#Verified Operating Systems: Windows 7                    C:\Program Files (x86)\Mozilla Firefox\
+#Verified Operating Systems: Windows 7
 #TODO: Update to newest version
 #-----------------------------------------------------------------------------------------------------------------
-if(Test-Path "C:\Program Files\Mozilla Firefox"){
-New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
-copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-$source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win64/en-US/firefox-55.0.3.complete.mar"
-$destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
-(New-Object System.Net.WebClient).DownloadFile($source, $destination)
-$loopnumber = 0
-while ($loopnumber -ne 1){
-   Write-Host("Press Enter once download is complete")
-   Read-Host
-   if(Test-Path $destination){
-      $loopnumber = 1
+if($poop -eq 1){
+   if(Test-Path "C:\Program Files\Mozilla Firefox"){
+   New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
+   copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
+   $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win64/en-US/firefox-55.0.3.complete.mar"
+   $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
+   (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+   $loopnumber = 0
+   while ($loopnumber -ne 1){
+      Write-Host("Press Enter once download is complete")
+      Read-Host
+      if(Test-Path $destination){
+         $loopnumber = 1
+      }else{
+         Write-Host("Download is not complete")
+      }
+   }
+   $fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
+   $fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
+   $fileplace3 = "C:\Program Files\Mozilla Firefox\uninstall\helper.exe"
+   Set-Location -Path "C:\Program Files\Mozilla Firefox"
+   cmd.exe /c $fileplace $fileplace2 "C:\Program Files\Mozilla Firefox" "C:\Program Files\Mozilla Firefox"
+   move-item -force -path ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.log") -destination "C:\Program Files\Mozilla Firefox\uninstall\uninstall.update"
+   cmd.exe /c $fileplace3 /PostUpdate
+   rm -force ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -r
+   Set-Location -Path "C:\Windows\system32"
    }else{
-      Write-Host("Download is not complete")
+      if(Test-Path "C:\Program Files (x86)\Mozilla Firefox"){
+         New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
+         copy-item -path "C:\Program Files (x86)\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
+         $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win32/en-US/firefox-55.0.3.complete.mar"
+         $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
+         (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+         $loopnumber = 0
+         while ($loopnumber -ne 1){
+            Write-Host("Press Enter once download is complete")
+            Read-Host
+            if(Test-Path $destination){
+               $loopnumber = 1
+            }else{
+               Write-Host("Download is not complete")
+            }
+         }
+         $fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
+         $fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
+         $fileplace3 = "C:\Program Files (x86)\Mozilla Firefox\uninstall\helper.exe"
+         Set-Location -Path "C:\Program Files (x86)\Mozilla Firefox"
+         cmd.exe /c $fileplace $fileplace2 "C:\Program Files (x86)\Mozilla Firefox" "C:\Program Files (x86)\Mozilla Firefox"
+         move-item -force -path ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.log") -destination "C:\Program Files (x86)\Mozilla Firefox\uninstall\uninstall.update"
+         cmd.exe /c $fileplace3 /PostUpdate
+         rm -force ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -r
+         Set-Location -Path "C:\Windows\system32"
+      }else{
+         Write-Host("There is no Mozilla Firefox on this machine, stupid.")
+      }
    }
 }
-$fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
-$fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
-$fileplace3 = "C:\Program Files\Mozilla Firefox\uninstall\helper.exe"
-Set-Location -Path "C:\Program Files\Mozilla Firefox"
-cmd.exe /c $fileplace $fileplace2 "C:\Program Files\Mozilla Firefox" "C:\Program Files\Mozilla Firefox"
-move-item -force -path ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.log") -destination "C:\Program Files\Mozilla Firefox\uninstall\uninstall.update"
-cmd.exe /c $fileplace3 /PostUpdate
-rm -force ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -r
-Set-Location -Path "C:\Windows\system32"
-}else{
-   if(Test-Path "C:\Program Files (x86)\Mozilla Firefox"){
-      New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
-      copy-item -path "C:\Program Files (x86)\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-      $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win32/en-US/firefox-55.0.3.complete.mar"
-      $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
-      (New-Object System.Net.WebClient).DownloadFile($source, $destination)
-      $loopnumber = 0
-      while ($loopnumber -ne 1){
-         Write-Host("Press Enter once download is complete")
-         Read-Host
-         if(Test-Path $destination){
-            $loopnumber = 1
-         }else{
-            Write-Host("Download is not complete")
-         }
+if($poop -eq 0){
+   if(Test-Path "C:\Program Files\Mozilla Firefox"){
+   New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
+   copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
+   $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win32/en-US/firefox-55.0.3.complete.mar"
+   $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
+   (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+   $loopnumber = 0
+   while ($loopnumber -ne 1){
+      Write-Host("Press Enter once download is complete")
+      Read-Host
+      if(Test-Path $destination){
+         $loopnumber = 1
+      }else{
+         Write-Host("Download is not complete")
       }
-      $fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
-      $fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
-      $fileplace3 = "C:\Program Files (x86)\Mozilla Firefox\uninstall\helper.exe"
-      Set-Location -Path "C:\Program Files (x86)\Mozilla Firefox"
-      cmd.exe /c $fileplace $fileplace2 "C:\Program Files (x86)\Mozilla Firefox" "C:\Program Files (x86)\Mozilla Firefox"
-      move-item -force -path ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.log") -destination "C:\Program Files (x86)\Mozilla Firefox\uninstall\uninstall.update"
-      cmd.exe /c $fileplace3 /PostUpdate
-      rm -force ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -r
-      Set-Location -Path "C:\Windows\system32"
+   }
+   $fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
+   $fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
+   $fileplace3 = "C:\Program Files\Mozilla Firefox\uninstall\helper.exe"
+   Set-Location -Path "C:\Program Files\Mozilla Firefox"
+   cmd.exe /c $fileplace $fileplace2 "C:\Program Files\Mozilla Firefox" "C:\Program Files\Mozilla Firefox"
+   move-item -force -path ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.log") -destination "C:\Program Files\Mozilla Firefox\uninstall\uninstall.update"
+   cmd.exe /c $fileplace3 /PostUpdate
+   rm -force ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -r
+   Set-Location -Path "C:\Windows\system32"
    }else{
-      Write-Host("There is no Mozilla Firefox on this machine, stupid.")
+      if(Test-Path "C:\Program Files (x86)\Mozilla Firefox"){
+         New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
+         copy-item -path "C:\Program Files (x86)\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
+         $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win32/en-US/firefox-55.0.3.complete.mar"
+         $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
+         (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+         $loopnumber = 0
+         while ($loopnumber -ne 1){
+            Write-Host("Press Enter once download is complete")
+            Read-Host
+            if(Test-Path $destination){
+               $loopnumber = 1
+            }else{
+               Write-Host("Download is not complete")
+            }
+         }
+         $fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
+         $fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
+         $fileplace3 = "C:\Program Files (x86)\Mozilla Firefox\uninstall\helper.exe"
+         Set-Location -Path "C:\Program Files (x86)\Mozilla Firefox"
+         cmd.exe /c $fileplace $fileplace2 "C:\Program Files (x86)\Mozilla Firefox" "C:\Program Files (x86)\Mozilla Firefox"
+         move-item -force -path ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.log") -destination "C:\Program Files (x86)\Mozilla Firefox\uninstall\uninstall.update"
+         cmd.exe /c $fileplace3 /PostUpdate
+         rm -force ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -r
+         Set-Location -Path "C:\Windows\system32"
+      }else{
+         Write-Host("There is no Mozilla Firefox on this machine, stupid.")
+      }
    }
 }
 #-----------------------------------------------------------------------------------------------------------------
