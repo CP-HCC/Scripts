@@ -628,49 +628,92 @@ while ($loopnumber -ne 1){
 #Lists all installed programs and prompts for uninstall
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
-$loopnumber = 0
-while ($loopnumber -ne 1){
-   $programcount = (Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*).Count
-   Write-Host("There are "+$programcount+" installed programs")
-   Write-Host("Loading installed programs...")
-   Write-Host(" ")
-   $programcountarray = @(0..$programcount)
-   $programcountarray2 = @(0..$programcount)
-   $programcountarray3 = @(0..$programcount)
-   $i = 1
-   Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Foreach-Object {
-      $programcountarray[$i] = $_.DisplayName
-      $programcountarray2[$i] = $_.Publisher
-      $programcountarray3[$i] = $_.UninstallString
-      $i++
-   }
-   $u = 1
-   $programcountarray | Foreach-Object{
-      Write-Host("Program "+$u+": ") -nonewline
-      Write-Host($programcountarray[$u]) -nonewline
-      Write-Host("  |  Publisher: "+$programcountarray2[$u])
+if($poop -eq 1){
+   $loopnumber = 0
+   while ($loopnumber -ne 1){
+      $programcount = (Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*).Count
+     Write-Host("There are "+$programcount+" installed programs")
+      Write-Host("Loading installed programs...")
       Write-Host(" ")
-      $u++
-   }
-   Write-Host("Would you like to uninstall any of these programs? y/n")
-   $deleteprogram = Read-Host
-   if($deleteprogram -eq "y"){
-      Write-Host("Enter the number of the program")
-      $badprogram = Read-Host
-      $programcountarray3[$badprogram] = $programcountarray3[$badprogram].Replace("/I", "/X")
-      if($programcountarray3[$badprogram].contains(“MsiExec.exe”)){
-      $programcountarray3[$badprogram] = ($programcountarray3[$badprogram] + " /qn /norestart")
-      Write-Host($a)
-      }else{
+      $programcountarray = @(0..$programcount)
+      $programcountarray2 = @(0..$programcount)
+      $programcountarray3 = @(0..$programcount)
+      $i = 1
+      Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Foreach-Object {
+         $programcountarray[$i] = $_.DisplayName
+         $programcountarray2[$i] = $_.Publisher
+         $programcountarray3[$i] = $_.UninstallString
+         $i++
       }
-      Write-Host($programcountarray3[$badprogram])
-      cmd.exe /c ($programcountarray3[$badprogram])
+      $u = 1
+      $programcountarray | Foreach-Object{
+         Write-Host("Program "+$u+": ") -nonewline
+         Write-Host($programcountarray[$u]) -nonewline
+         Write-Host("  |  Publisher: "+$programcountarray2[$u])
+         Write-Host(" ")
+         $u++
+      }
+      Write-Host("Would you like to uninstall any of these programs? y/n")
+      $deleteprogram = Read-Host
+      if($deleteprogram -eq "y"){
+         Write-Host("Enter the number of the program")
+         $badprogram = Read-Host
+         $programcountarray3[$badprogram] = $programcountarray3[$badprogram].Replace("/I", "/X")
+         if($programcountarray3[$badprogram].contains(“MsiExec.exe”)){
+         $programcountarray3[$badprogram] = ($programcountarray3[$badprogram] + " /qn /norestart")
+         Write-Host($a)
+         }else{
+         }
+         Write-Host($programcountarray3[$badprogram])
+         cmd.exe /c ($programcountarray3[$badprogram])
+      }
+      if($deleteprogram -eq "n"){
+         $loopnumber = 1
+      }
+      if($deleteprogram -ne "y" -and $deleteprogram -ne "n"){
+         Write-Host("That is neither a y or n")
+      }
    }
-   if($deleteprogram -eq "n"){
-      $loopnumber = 1
-   }
-   if($deleteprogram -ne "y" -and $deleteprogram -ne "n"){
-      Write-Host("That is neither a y or n")
+}
+if($poop -eq 0){
+   $loopnumber = 0
+   while ($loopnumber -ne 1){
+      $programcount = (Get-WmiObject -Class Win32_Product).Count
+      Write-Host("There are "+$programcount+" installed programs")
+      Write-Host("Loading installed programs...")
+      Write-Host(" ")
+      $programcountarray = @(0..$programcount)
+      $programcountarray2 = @(0..$programcount)
+      $i = 1
+      Get-WmiObject -Class Win32_Product | Foreach-Object {
+         $programcountarray[$i] = $_.Name
+         $programcountarray2[$i] = $_.Vendor
+         $i++
+      }
+      $u = 1
+      $programcountarray | Foreach-Object{
+         Write-Host("Program "+$u+": ") -nonewline
+         Write-Host($programcountarray[$u]) -nonewline
+         Write-Host("  |  Publisher: "+$programcountarray2[$u])
+         Write-Host(" ")
+         $u++
+      }
+      Write-Host("Would you like to uninstall any of these programs? y/n")
+      $deleteprogram = Read-Host
+      if($deleteprogram -eq "y"){
+         Write-Host("Enter the number of the program")
+         $badprogram = Read-Host
+         $app = Get-WmiObject -Class Win32_Product | Where-Object {
+            $_.Name -match $programcountarray[$badprogram]
+         }
+         $app.Uninstall()
+      }
+      if($deleteprogram -eq "n"){
+         $loopnumber = 1
+      }
+      if($deleteprogram -ne "y" -and $deleteprogram -ne "n"){
+         Write-Host("That is neither a y or n")
+      }
    }
 }
 #-----------------------------------------------------------------------------------------------------------------
