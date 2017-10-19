@@ -730,7 +730,7 @@ $MSUpdateSettings.NonAdministratorsElevated=1
 $MSUpdateSettings.save()
 #-----------------------------------------------------------------------------------------------------------------
 #
-#Updates Mozilla Firefox to version 55.0.3
+#Updates Mozilla Firefox to version 56.0.1
 #Verified Operating Systems: Windows 7
 #TODO: Update to newest version
 #-----------------------------------------------------------------------------------------------------------------
@@ -738,7 +738,7 @@ if($poop -eq 1){
    if(Test-Path "C:\Program Files\Mozilla Firefox"){
    New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
    copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-   $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win64/en-US/firefox-55.0.3.complete.mar"
+   $source = "http://archive.mozilla.org/pub/firefox/releases/56.0.1/update/win64/en-US/firefox-56.0.1.complete.mar"
    $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
    (New-Object System.Net.WebClient).DownloadFile($source, $destination)
    $loopnumber = 0
@@ -764,7 +764,7 @@ if($poop -eq 1){
       if(Test-Path "C:\Program Files (x86)\Mozilla Firefox"){
          New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
          copy-item -path "C:\Program Files (x86)\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-         $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win32/en-US/firefox-55.0.3.complete.mar"
+         $source = "http://archive.mozilla.org/pub/firefox/releases/56.0.1/update/win32/en-US/firefox-56.0.1.complete.mar"
          $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
          (New-Object System.Net.WebClient).DownloadFile($source, $destination)
          $loopnumber = 0
@@ -795,7 +795,7 @@ if($poop -eq 0){
    if(Test-Path "C:\Program Files\Mozilla Firefox"){
    New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
    copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-   $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win32/en-US/firefox-55.0.3.complete.mar"
+   $source = "http://archive.mozilla.org/pub/firefox/releases/56.0.1/update/win32/en-US/firefox-56.0.1.complete.mar"
    $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
    (New-Object System.Net.WebClient).DownloadFile($source, $destination)
    $loopnumber = 0
@@ -821,7 +821,7 @@ if($poop -eq 0){
       if(Test-Path "C:\Program Files (x86)\Mozilla Firefox"){
          New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
          copy-item -path "C:\Program Files (x86)\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-         $source = "http://archive.mozilla.org/pub/firefox/releases/55.0.3/update/win32/en-US/firefox-55.0.3.complete.mar"
+         $source = "http://archive.mozilla.org/pub/firefox/releases/56.0.1/update/win32/en-US/firefox-56.0.1.complete.mar"
          $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
          (New-Object System.Net.WebClient).DownloadFile($source, $destination)
          $loopnumber = 0
