@@ -127,9 +127,11 @@ $userslist | Foreach-Object {
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Sets User Account Control to highest settings
+#Restricts anonymous access to named pipes and shares
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
 Set-ItemProperty -Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA -Value 4
+Set-ItemProperty -Path registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters -Name restrictnullsessaccess -Value 1
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Removes unwanted groups
