@@ -111,11 +111,11 @@ while ($loopnumber -ne 1){
    }
 }
 $userslist | Foreach-Object {
-   if($_.name -Contains $arraything){
+   if($arraything -Contains $_.name){
       $group = [ADSI]("WinNT://"+$env:COMPUTERNAME+"/administrators,group")
       $group.add("WinNT://"+$_.name+",user")
    }
-   if($_.name -NotContains $MainDude -and $_.name -NotContains $arraything){
+   if($_.name -NotContains $MainDude -and $arraything -NotContains $_.name){
       $group = [ADSI]("WinNT://"+$env:COMPUTERNAME+"/administrators,group")
       $group.remove("WinNT://"+$_.name+",user")
    }
