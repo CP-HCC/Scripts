@@ -142,7 +142,7 @@ $userslist | Foreach-Object {
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Sets User Account Control to highest settings
-#Restricts anonymous access to named pipes and shares
+#Requires CTRL+ALT+DEL for logon
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
 Set-ItemProperty -Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA -Value 4
