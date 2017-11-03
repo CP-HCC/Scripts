@@ -22,10 +22,10 @@ if($os -eq "64-bit"){
 
 #NEW VERSION. Sets them on any computer regardless of if they have been altered previously
 secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
-$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName', 'ClearTextPassword', 'NullSessAccess', 'DontDisplayLastUserName', 'RestrictAnonymousSAM', 'RestrictAnonymous')
-$SecurityPolicyValues = @(8, 1, 10, 30, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 'PoopyDumbGuy', 'PoopyFreeloader', 0, 1, 1, 1, 1)
+$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName', 'ClearTextPassword', 'NullSessAccess', 'DontDisplayLastUserName', 'RestrictAnonymousSAM', 'SecurityLevel', 'ShutdownWithoutLogon')
+$SecurityPolicyValues = @(8, 1, 10, 30, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 'PoopyDumbGuy', 'PoopyFreeloader', 0, 1, 1, 1, 0, 0)
 $ivalue = 0
-for ($i = 0; $i -ne 24; $i++){
+for ($i = 0; $i -ne 25; $i++){
    [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
   if ($i -lt 20){
    $PolicyValueChar = $PolicyLine.IndexOf('=')
@@ -56,7 +56,7 @@ $PolicyValueChar = $PolicyLine.IndexOf($SecurityPolicyArray[$i])
 }
 secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
 (gc C:\secpol.cfg)
-(gc C:\secpol.cfg) | Out-File c:\Users\cyberpatriot\desktop\stuff.txt
+(gc C:\secpol.cfg) | Out-File ("c:\Users\"+$env:UserName+"\desktop\stuff.txt")
 rm -force c:\secpol.cfg
 #-----------------------------------------------------------------------------------------------------------------
 #
@@ -146,7 +146,7 @@ $userslist | Foreach-Object {
 #Verified Operating Systems: Windows 7
 #-----------------------------------------------------------------------------------------------------------------
 Set-ItemProperty -Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA -Value 4
-Set-ItemProperty -Path registry::HKEY_LOCAL_MACHINE\System\CurrentControlSet\Services\LanManServer\Parameters -Name restrictnullsessaccess -Value 1
+Set-ItemProperty -Path registry::HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name DisableCAD -Value 0
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Removes unwanted groups
