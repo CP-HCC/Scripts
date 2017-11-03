@@ -22,26 +22,41 @@ if($os -eq "64-bit"){
 
 #NEW VERSION. Sets them on any computer regardless of if they have been altered previously
 secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
-$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName', 'ClearTextPassword')
-$SecurityPolicyValues = @(8, 1, 10, 30, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 'PoopyDumbGuy', 'PoopyFreeloader', 0)
+$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName', 'ClearTextPassword', 'NullSessAccess', 'DontDisplayLastUserName', 'RestrictAnonymousSAM', 'RestrictAnonymous')
+$SecurityPolicyValues = @(8, 1, 10, 30, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 'PoopyDumbGuy', 'PoopyFreeloader', 0, 1, 1, 1, 1)
 $ivalue = 0
-for ($i = 0; $i -ne 20; $i++){
+for ($i = 0; $i -ne 24; $i++){
    [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
+  if ($i -lt 20){
    $PolicyValueChar = $PolicyLine.IndexOf('=')
    [String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+2)
+   [String]$PolicyValue2 = $PolicyLine.Substring(0, $PolicyValueChar)
+ }else{
+ $PolicyValueChar = $PolicyLine.IndexOf(',')
+[String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+1)
+[String]$PolicyValue2 = $PolicyLine.Substring(0, $PolicyValueChar)
+$PolicyValueChar = $PolicyLine.IndexOf($SecurityPolicyArray[$i])
+[String]$PolicyValue2 = $PolicyValue2.Substring($PolicyValueChar)
+}
    if ($i -eq 3){
       [String]$PolicyValue = $PolicyValue.Substring(0, ($PolicyValue.IndexOf(' ')))
    }else{
    }
    [String]$StringSecurityPolicyArray = $SecurityPolicyArray[$i]
    [String]$StringSecurityPolicyValues = $SecurityPolicyValues[$ivalue]
-   [String]$OldPolicy = ($StringSecurityPolicyArray + " = " + $PolicyValue)
-   [String]$NewPolicy = ($StringSecurityPolicyArray + " = " + $StringSecurityPolicyValues)
+   if ($i -lt 20){
+      [String]$OldPolicy = ($StringSecurityPolicyArray + " = " + $PolicyValue)
+      [String]$NewPolicy = ($StringSecurityPolicyArray + " = " + $StringSecurityPolicyValues)
+   }else{
+      [String]$OldPolicy = ($PolicyValue2 + "," + $PolicyValue)
+      [String]$NewPolicy = ($PolicyValue2 + "," + $StringSecurityPolicyValues)
+   }
    (gc C:\secpol.cfg) -replace ($OldPolicy), ($NewPolicy)| Out-File C:\secpol.cfg
    $ivalue++
 }
 secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
 (gc C:\secpol.cfg)
+(gc C:\secpol.cfg) | Out-File c:\Users\cyberpatriot\desktop\stuff.txt
 rm -force c:\secpol.cfg
 #-----------------------------------------------------------------------------------------------------------------
 #
