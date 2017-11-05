@@ -751,14 +751,15 @@ $MSUpdateSettings.save()
 #Verified Operating Systems: Windows 7
 #TODO: Update to newest version
 #-----------------------------------------------------------------------------------------------------------------
-$WebResponse = Invoke-WebRequest "https://en.wikipedia.org/wiki/Firefox"
-$string = $WebResponse.Content
-$pos = $string.IndexOf('stable version" data-sort-value="[')
-$cut = $string.Substring($pos)
-$pos2 = $cut.IndexOf('releases')
-$leftcut = $cut.Substring($pos2 + 9)
-$pos3 = $leftcut.IndexOf('/')
-$rightcut = $leftcut.Substring(0, $pos3)
+#$WebResponse = Invoke-WebRequest "https://en.wikipedia.org/wiki/Firefox"
+#$string = $WebResponse.Content
+#$pos = $string.IndexOf('stable version" data-sort-value="[')
+#$cut = $string.Substring($pos)
+#$pos2 = $cut.IndexOf('releases')
+#$leftcut = $cut.Substring($pos2 + 9)
+#$pos3 = $leftcut.IndexOf('/')
+#$rightcut = $leftcut.Substring(0, $pos3)
+$rightcut = 56.0.2
 
 if($poop -eq 1){
    if(Test-Path "C:\Program Files\Mozilla Firefox"){
