@@ -33,49 +33,55 @@ while ($loopnumber -ne 1){
 #Expected Operating Systems: XP and beyond, Server 2003 and beyond
 #TO-DO: I need to make it export secpol.cfg to a more secure file, rather than just exporting it to C:
 #-----------------------------------------------------------------------------------------------------------------
-#OLD VERSION. It only sets them correctly if the computer is on default security policies
-#secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
-#(gc C:\secpol.cfg) -replace ("MinimumPasswordLength = 0", "MinimumPasswordLength = 8") -replace ("PasswordComplexity = 0", "PasswordComplexity = 1") -replace ("MinimumPasswordAge = 0", "MinimumPasswordAge = 10") -replace ("MaximumPasswordAge = 42", "MaximumPasswordAge = 30") -replace ("PasswordHistorySize = 0", "PasswordHistorySize = 5") -replace ("ClearTextPassword = 1", "ClearTextPassword = 0") -replace ("LockoutBadCount = 0", "LockoutBadCount = 3") -replace ('NewAdministratorName = "Administrator"', 'NewAdministratorName = "PoopyDumbGuy"') -replace ('NewGuestName = "Guest"', 'NewGuestName = "PoopyFreeloader"') | Out-File C:\secpol.cfg
-#secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
-#rm -force c:\secpol.cfg
+if($usingdrive -eq 0){
+   #OLD VERSION. It only sets them correctly if the computer is on default security policies
+   #secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
+   #(gc C:\secpol.cfg) -replace ("MinimumPasswordLength = 0", "MinimumPasswordLength = 8") -replace ("PasswordComplexity = 0", "PasswordComplexity = 1") -replace ("MinimumPasswordAge = 0", "MinimumPasswordAge = 10") -replace ("MaximumPasswordAge = 42", "MaximumPasswordAge = 30") -replace ("PasswordHistorySize = 0", "PasswordHistorySize = 5") -replace ("ClearTextPassword = 1", "ClearTextPassword = 0") -replace ("LockoutBadCount = 0", "LockoutBadCount = 3") -replace ('NewAdministratorName = "Administrator"', 'NewAdministratorName = "PoopyDumbGuy"') -replace ('NewGuestName = "Guest"', 'NewGuestName = "PoopyFreeloader"') | Out-File C:\secpol.cfg
+   #secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
+   #rm -force c:\secpol.cfg
 
-#NEW VERSION. Sets them on any computer regardless of if they have been altered previously
-secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
-$SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName', 'ClearTextPassword', 'NullSessAccess', 'DontDisplayLastUserName', 'RestrictAnonymousSAM', 'SecurityLevel', 'ShutdownWithoutLogon')
-$SecurityPolicyValues = @(8, 1, 10, 30, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 'PoopyDumbGuy', 'PoopyFreeloader', 0, 1, 1, 1, 0, 0)
-$ivalue = 0
-for ($i = 0; $i -ne 25; $i++){
-   [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
-  if ($i -lt 20){
-   $PolicyValueChar = $PolicyLine.IndexOf('=')
-   [String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+2)
-   [String]$PolicyValue2 = $PolicyLine.Substring(0, $PolicyValueChar)
- }else{
- $PolicyValueChar = $PolicyLine.IndexOf(',')
-[String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+1)
-[String]$PolicyValue2 = $PolicyLine.Substring(0, $PolicyValueChar)
-$PolicyValueChar = $PolicyLine.IndexOf($SecurityPolicyArray[$i])
-[String]$PolicyValue2 = $PolicyValue2.Substring($PolicyValueChar)
-}
-   if ($i -eq 3){
-      [String]$PolicyValue = $PolicyValue.Substring(0, ($PolicyValue.IndexOf(' ')))
-   }else{
-   }
-   [String]$StringSecurityPolicyArray = $SecurityPolicyArray[$i]
-   [String]$StringSecurityPolicyValues = $SecurityPolicyValues[$ivalue]
-   if ($i -lt 20){
-      [String]$OldPolicy = ($StringSecurityPolicyArray + " = " + $PolicyValue)
-      [String]$NewPolicy = ($StringSecurityPolicyArray + " = " + $StringSecurityPolicyValues)
-   }else{
-      [String]$OldPolicy = ($PolicyValue2 + "," + $PolicyValue)
-      [String]$NewPolicy = ($PolicyValue2 + "," + $StringSecurityPolicyValues)
-   }
+   #NEW VERSION. Sets them on any computer regardless of if they have been altered previously
+   secedit /export /cfg c:\secpol.cfg /areas SECURITYPOLICY
+   $SecurityPolicyArray = @('MinimumPasswordLength', 'PasswordComplexity', 'MinimumPasswordAge', 'MaximumPasswordAge', 'PasswordHistorySize', 'LockoutBadCount', 'AuditSystemEvents', 'AuditLogonEvents', 'AuditObjectAccess', 'AuditPrivilegeUse', 'AuditPolicyChange', 'AuditAccountManage', 'AuditProcessTracking', 'AuditDSAccess', 'AuditAccountLogon', 'EnableAdminAccount', 'EnableGuestAccount', 'NewAdministratorName', 'NewGuestName', 'ClearTextPassword', 'NullSessAccess', 'DontDisplayLastUserName', 'RestrictAnonymousSAM', 'SecurityLevel', 'ShutdownWithoutLogon')
+   $SecurityPolicyValues = @(8, 1, 10, 30, 5, 5, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0, 0, 'PoopyDumbGuy', 'PoopyFreeloader', 0, 1, 1, 1, 0, 0)
+   $ivalue = 0
+   for ($i = 0; $i -ne 25; $i++){
+      [String]$PolicyLine = Select-String -Path "c:\secpol.cfg" -Pattern $SecurityPolicyArray[$i]
+      if($i -lt 20){
+         $PolicyValueChar = $PolicyLine.IndexOf('=')
+         [String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+2)
+         [String]$PolicyValue2 = $PolicyLine.Substring(0, $PolicyValueChar)
+      }else{
+         $PolicyValueChar = $PolicyLine.IndexOf(',')
+         [String]$PolicyValue = $PolicyLine.Substring($PolicyValueChar+1)
+         [String]$PolicyValue2 = $PolicyLine.Substring(0, $PolicyValueChar)
+         $PolicyValueChar = $PolicyLine.IndexOf($SecurityPolicyArray[$i])
+         [String]$PolicyValue2 = $PolicyValue2.Substring($PolicyValueChar)
+      }
+      if ($i -eq 3){
+         [String]$PolicyValue = $PolicyValue.Substring(0, ($PolicyValue.IndexOf(' ')))
+      }else{
+      }
+      [String]$StringSecurityPolicyArray = $SecurityPolicyArray[$i]
+      [String]$StringSecurityPolicyValues = $SecurityPolicyValues[$ivalue]
+      if ($i -lt 20){
+         [String]$OldPolicy = ($StringSecurityPolicyArray + " = " + $PolicyValue)
+         [String]$NewPolicy = ($StringSecurityPolicyArray + " = " + $StringSecurityPolicyValues)
+      }else{
+         [String]$OldPolicy = ($PolicyValue2 + "," + $PolicyValue)
+         [String]$NewPolicy = ($PolicyValue2 + "," + $StringSecurityPolicyValues)
+      }
    (gc C:\secpol.cfg) -replace ($OldPolicy), ($NewPolicy)| Out-File C:\secpol.cfg
    $ivalue++
+   }
+   secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
+   (gc C:\secpol.cfg)
+   rm -force c:\secpol.cfg
 }
-secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
-(gc C:\secpol.cfg)
-rm -force c:\secpol.cfg
+if($usingdrive -eq 1){
+   secedit /configure /db c:\windows\security\local.sdb /cfg ($mydrive + "\secpol.cfg") /areas SECURITYPOLICY
+   (gc ($mydrive + "\secpol.cfg"))
+}
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Creates secure passwords for all accounts
