@@ -7,6 +7,25 @@ if($os -eq "64-bit"){
 }else{
    $poop = 0
 }
+$loopnumber = 0
+while ($loopnumber -ne 1){
+   Write-Host("Are you using the CyberPatriot jumpdrive? y/n")
+   $jump = Read-Host
+   if($jump -eq "y"){
+      $usingdrive = 1;
+      $mydrive=(GWmi Win32_LogicalDisk | ?{$_.VolumeName -eq 'CyberPatriot'} | %{$_.DeviceID})
+      $loopnumber = 1
+      Write-Host("Make sure its in the computer. Then press any key to proceed.")
+      Read-Host
+   }
+   if($jump -eq "n"){
+      $usingdrive = 0;
+      $loopnumber = 1
+   }
+   if($jump -ne "y" -and $jump -ne "n"){
+      Write-Host("That is neither a y or n. Idiot.")
+   }
+}
 #-----------------------------------------------------------------------------------------------------------------
 #
 #Sets security policies (Password stuff, and auditing)
@@ -56,7 +75,6 @@ $PolicyValueChar = $PolicyLine.IndexOf($SecurityPolicyArray[$i])
 }
 secedit /configure /db c:\windows\security\local.sdb /cfg c:\secpol.cfg /areas SECURITYPOLICY
 (gc C:\secpol.cfg)
-(gc C:\secpol.cfg) | Out-File ("c:\Users\"+$env:UserName+"\desktop\stuff.txt")
 rm -force c:\secpol.cfg
 #-----------------------------------------------------------------------------------------------------------------
 #
@@ -90,6 +108,8 @@ Function generatePasswords([String]$theirname){
    $c = $c.Replace("B", "8")
    $c = $c.Replace("l", "1")
    $c = $c.Replace("L", "1")
+   $c = $c.Replace("i", "1")
+   $c = $c.Replace("I", "1")
    $c = $c.Replace("o", "0")
    $c = $c.Replace("O", "0")
    $c = $c.Replace("z", "2")
@@ -458,45 +478,71 @@ DISM /online /disable-feature /FeatureName:SimpleTCP /norestart | Out-Null
 #-----------------------------------------------------------------------------------------------------------------
 if(Test-Path "C:\Program Files\Microsoft Security Client\msseces.exe" -or Test-Path "C:\Program Files (x86)\Microsoft Security Client\msseces.exe"){
 }else{
-   if($poop -eq 1){
-      $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/amd64/mseinstall.exe"
-      $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
-      (New-Object System.Net.WebClient).DownloadFile($source, $destination)
-      $loopnumber = 0
-      while ($loopnumber -ne 1){
-         Write-Host("Press Enter once download is complete")
-         Read-Host
-         if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
-            #Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
-            Set-Location "C:\Users\$env:Username\Desktop"
-            cmd.exe /c "mseinstall.exe /s /runwgacheck /o"
-            Set-Location "C:\Windows\System32"
-            $loopnumber = 1
-         }else{
-            Write-Host("Download is not complete")
+   if($usingdrive -eq 0){
+      if($poop -eq 1){
+         $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/amd64/mseinstall.exe"
+         $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+         (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+         $loopnumber = 0
+         while ($loopnumber -ne 1){
+            Write-Host("Press Enter once download is complete")
+            Read-Host
+            if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
+               #Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+               Set-Location "C:\Users\$env:Username\Desktop"
+               cmd.exe /c "mseinstall.exe /s /runwgacheck /o"
+               Set-Location "C:\Windows\System32"
+               $loopnumber = 1
+            }else{
+               Write-Host("Download is not complete")
+            }
          }
+      }
+      if($poop -eq 0){
+         $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/x86/mseinstall.exe"
+         $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+         (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+         $loopnumber = 0
+         while ($loopnumber -ne 1){
+            Write-Host("Press Enter once download is complete")
+            Read-Host
+            if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
+               #Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
+               Set-Location "C:\Users\$env:Username\Desktop"
+               cmd.exe /c "mseinstall.exe /s /runwgacheck /o"
+               Set-Location "C:\Windows\System32"
+               $loopnumber = 1
+            }else{
+               Write-Host("Download is not complete")
+            }
+         }
+      }else{
+         Write-Host("What operating system could you possibly have at this point?")
       }
    }
-   if($poop -eq 0){
-      $source = "http://mse.dlservice.microsoft.com/download/A/3/8/A38FFBF2-1122-48B4-AF60-E44F6DC28BD8/enus/x86/mseinstall.exe"
-      $destination = ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
-      (New-Object System.Net.WebClient).DownloadFile($source, $destination)
-      $loopnumber = 0
-      while ($loopnumber -ne 1){
-         Write-Host("Press Enter once download is complete")
-         Read-Host
-         if(Test-Path ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")){
-            #Start-Process ("C:\Users\"+$env:UserName+"\Desktop\mseinstall.exe")
-            Set-Location "C:\Users\$env:Username\Desktop"
+   if($usingdrive -eq 1){
+      if($poop -eq 1){
+         if(Test-Path ($mydrive + "\Windows 7 (64)\mseinstall.exe")){
+            #Start-Process ($mydrive + "\Windows 7 (64)\mseinstall.exe")
+            Set-Location ($mydrive + "\Windows 7 (64)")
             cmd.exe /c "mseinstall.exe /s /runwgacheck /o"
             Set-Location "C:\Windows\System32"
-            $loopnumber = 1
          }else{
-            Write-Host("Download is not complete")
+            Write-Host("Its not on the drive, stupid. Unless I screwed up...")
          }
       }
-   }else{
-      Write-Host("What operating system could you possibly have at this point?")
+      if($poop -eq 0){
+         if(Test-Path ($mydrive + "\Windows 7 (32)\mseinstall.exe")){
+            #Start-Process ($mydrive + "\Windows 7 (32)\mseinstall.exe")
+            Set-Location ($mydrive + "\Windows 7 (32)")
+            cmd.exe /c "mseinstall.exe /s /runwgacheck /o"
+            Set-Location "C:\Windows\System32"
+         }else{
+            Write-Host("Its not on the drive, stupid. Unless I screwed up...")
+         }
+      }else{
+         Write-Host("What operating system could you possibly have at this point?")
+      }
    }
 }
 #-----------------------------------------------------------------------------------------------------------------
