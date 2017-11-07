@@ -13,10 +13,10 @@ while ($loopnumber -ne 1){
    $jump = Read-Host
    if($jump -eq "y"){
       $usingdrive = 1;
-      $mydrive=(GWmi Win32_LogicalDisk | ?{$_.VolumeName -eq 'CyberPatriot'} | %{$_.DeviceID})
-      $loopnumber = 1
       Write-Host("Make sure its in the computer. Then press any key to proceed.")
       Read-Host
+      $mydrive=(GWmi Win32_LogicalDisk | ?{$_.VolumeName -eq 'CyberPatriot'} | %{$_.DeviceID})
+      $loopnumber = 1
    }
    if($jump -eq "n"){
       $usingdrive = 0;
