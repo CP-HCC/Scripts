@@ -811,7 +811,7 @@ $MSUpdateSettings.save()
 #$leftcut = $cut.Substring($pos2 + 9)
 #$pos3 = $leftcut.IndexOf('/')
 #$rightcut = $leftcut.Substring(0, $pos3)
-$rightcut = 56.0.2
+$rightcut = '56.0.2'
 
 if($poop -eq 1){
    if(Test-Path "C:\Program Files\Mozilla Firefox"){
