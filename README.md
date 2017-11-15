@@ -1,3 +1,2 @@
 # CyberPatriot
 
-Git terminal test
