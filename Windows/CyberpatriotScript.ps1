@@ -811,24 +811,29 @@ $MSUpdateSettings.save()
 #$leftcut = $cut.Substring($pos2 + 9)
 #$pos3 = $leftcut.IndexOf('/')
 #$rightcut = $leftcut.Substring(0, $pos3)
-$rightcut = '56.0.2'
+$rightcut = '57.0'
 
 if($poop -eq 1){
    if(Test-Path "C:\Program Files\Mozilla Firefox"){
    New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
    copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-   $source = "http://archive.mozilla.org/pub/firefox/releases/" + $rightcut + "/update/win64/en-US/firefox-" + $rightcut + ".complete.mar"
-   $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
-   (New-Object System.Net.WebClient).DownloadFile($source, $destination)
-   $loopnumber = 0
-   while ($loopnumber -ne 1){
-      Write-Host("Press Enter once download is complete")
-      Read-Host
-      if(Test-Path $destination){
-         $loopnumber = 1
-      }else{
-         Write-Host("Download is not complete")
+   if($usingdrive -eq 0){
+      $source = "http://archive.mozilla.org/pub/firefox/releases/" + $rightcut + "/update/win64/en-US/firefox-" + $rightcut + ".complete.mar"
+      $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
+      (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+      $loopnumber = 0
+      while ($loopnumber -ne 1){
+         Write-Host("Press Enter once download is complete")
+         Read-Host
+         if(Test-Path $destination){
+            $loopnumber = 1
+         }else{
+            Write-Host("Download is not complete")
+         }
       }
+   }
+   if($usingdrive -eq 1){
+      copy-item -path ($mydrive + "\Windows 7 (64)\update.mar") -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar")
    }
    $fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
    $fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
@@ -843,18 +848,23 @@ if($poop -eq 1){
       if(Test-Path "C:\Program Files (x86)\Mozilla Firefox"){
          New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
          copy-item -path "C:\Program Files (x86)\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-         $source = "http://archive.mozilla.org/pub/firefox/releases/" + $rightcut + "/update/win32/en-US/firefox-" + $rightcut + ".complete.mar"
-         $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
-         (New-Object System.Net.WebClient).DownloadFile($source, $destination)
-         $loopnumber = 0
-         while ($loopnumber -ne 1){
-            Write-Host("Press Enter once download is complete")
-            Read-Host
-            if(Test-Path $destination){
-               $loopnumber = 1
-            }else{
-               Write-Host("Download is not complete")
+         if($usingdrive -eq 0){
+            $source = "http://archive.mozilla.org/pub/firefox/releases/" + $rightcut + "/update/win32/en-US/firefox-" + $rightcut + ".complete.mar"
+            $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
+            (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+            $loopnumber = 0
+            while ($loopnumber -ne 1){
+               Write-Host("Press Enter once download is complete")
+               Read-Host
+               if(Test-Path $destination){
+                  $loopnumber = 1
+               }else{
+                  Write-Host("Download is not complete")
+               }
             }
+         }
+         if($usingdrive -eq 1){
+            copy-item -path ($mydrive + "\Windows 7 (32)\update.mar") -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar")
          }
          $fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
          $fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
@@ -874,18 +884,23 @@ if($poop -eq 0){
    if(Test-Path "C:\Program Files\Mozilla Firefox"){
    New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
    copy-item -path "C:\Program Files\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-   $source = "http://archive.mozilla.org/pub/firefox/releases/" + $rightcut + "/update/win32/en-US/firefox-" + $rightcut + ".complete.mar"
-   $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
-   (New-Object System.Net.WebClient).DownloadFile($source, $destination)
-   $loopnumber = 0
-   while ($loopnumber -ne 1){
-      Write-Host("Press Enter once download is complete")
-      Read-Host
-      if(Test-Path $destination){
-         $loopnumber = 1
-      }else{
-         Write-Host("Download is not complete")
+   if($usingdrive -eq 0){
+      $source = "http://archive.mozilla.org/pub/firefox/releases/" + $rightcut + "/update/win32/en-US/firefox-" + $rightcut + ".complete.mar"
+      $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
+      (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+      $loopnumber = 0
+      while ($loopnumber -ne 1){
+         Write-Host("Press Enter once download is complete")
+         Read-Host
+         if(Test-Path $destination){
+            $loopnumber = 1
+         }else{
+            Write-Host("Download is not complete")
+         }
       }
+   }
+   if($usingdrive -eq 1){
+      copy-item -path ($mydrive + "\Windows 7 (32)\update.mar") -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar")
    }
    $fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
    $fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
@@ -900,18 +915,23 @@ if($poop -eq 0){
       if(Test-Path "C:\Program Files (x86)\Mozilla Firefox"){
          New-Item ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR") -type directory | Out-Null
          copy-item -path "C:\Program Files (x86)\Mozilla Firefox\updater.exe" -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe")
-         $source = "http://archive.mozilla.org/pub/firefox/releases/" + $rightcut + "/update/win32/en-US/firefox-" + $rightcut + ".complete.mar"
-         $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
-         (New-Object System.Net.WebClient).DownloadFile($source, $destination)
-         $loopnumber = 0
-         while ($loopnumber -ne 1){
-            Write-Host("Press Enter once download is complete")
-            Read-Host
-            if(Test-Path $destination){
-               $loopnumber = 1
-            }else{
-               Write-Host("Download is not complete")
+         if($usingdrive -eq 0){
+            $source = "http://archive.mozilla.org/pub/firefox/releases/" + $rightcut + "/update/win32/en-US/firefox-" + $rightcut + ".complete.mar"
+            $destination = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar"
+            (New-Object System.Net.WebClient).DownloadFile($source, $destination)
+            $loopnumber = 0
+            while ($loopnumber -ne 1){
+               Write-Host("Press Enter once download is complete")
+               Read-Host
+               if(Test-Path $destination){
+                  $loopnumber = 1
+               }else{
+                  Write-Host("Download is not complete")
+               }
             }
+         }
+         if($usingdrive -eq 1){
+            copy-item -path ($mydrive + "\Windows 7 (32)\update.mar") -destination ("C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\update.mar")
          }
          $fileplace = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR\updater.exe"
          $fileplace2 = "C:\Users\"+$env:UserName+"\Desktop\FirefoxMAR"
